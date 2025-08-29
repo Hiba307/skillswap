@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillSwap - Type to Learn Game</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link rel="icon" type="img/png" href="favicon.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+     :root {
+      --main-bg-gradient: linear-gradient(270deg, #4b0082, #6a0dad, #1c1c1c, #4b0082);
+      --footer-bg: #000000;
+      --footer-glow: rgba(106, 13, 173, 0.6);
+      --primary-purple: #6a0dad;
+      --primary-purple-light: #b084f9;
+      --text-light: #d1b3ff;
+      --text-white: #fff;
+      --input-bg: #1a1a1a;
+      --input-border: #6a0dad;
+      --footer-bg-gradient: linear-gradient(135deg, #1a0033, #4b0082);
+    }
+    
+ /* Modern & Matching Navbar */
+    .navbar {
+      background: var(--footer-bg-gradient);
+      /* Same gradient as footer */
+      box-shadow: 0 4px 15px rgba(106, 13, 173, 0.7);
+      transition: background 0.5s ease;
+      padding: 1rem 2rem;
+      z-index: 1000;
+    }
+
+    .navbar:hover {
+      background: linear-gradient(135deg, #2a004d, #4b0082);
+      box-shadow: 0 4px 15px rgba(90, 12, 152, 0.7);
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-white) !important;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: var(--primary-purple-light) !important;
+    }
+
+    .navbar-nav .nav-link {
+      margin: 0 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-light) !important;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-purple-light) !important;
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+      margin-top: 3px;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #fff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-purple-light);
+    }
+
+   /* Navbar Toggler - simple white icon, no hover/click effects */
+.navbar-toggler {
+  background: none;       /* Transparent background */
+  border: none;           /* No border */
+  padding: 0.35rem 0.55rem;
+  box-shadow: none;
+  outline: none;          /* Remove focus outline */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:not(.collapsed) {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;  /* Remove white border on click */
+}
+
+/* Hamburger icon */
+.navbar-toggler .fa-bars {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+/* Hide default Bootstrap toggler icon */
+.navbar-toggler-icon {
+  display: none;
+}
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #4b0082, #000000);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .game-container {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 160px);
+      padding: 20px;
+      background: rgba(26, 0, 31, 0.9);
+      border: 2px solid #8b4dff;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(138, 43, 226, 0.6);
+      max-width: 600px;
+      margin: 60px auto;
+      z-index: 1;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #ffccff;
+    }
+
+    #sentence {
+      font-size: 1.2rem;
+      margin: 20px 0;
+      text-align: center;
+      max-width: 500px;
+      letter-spacing: 1px;
+      line-height: 1.5;
+    }
+
+    #sentence span.correct {
+      color: #00ffae;
+      text-shadow: 0 0 10px #00ffae;
+    }
+
+    #sentence span.wrong {
+      color: #ff5c8a;
+      text-shadow: 0 0 10px #ff5c8a;
+    }
+
+    input {
+      padding: 10px;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 400px;
+      border: 2px solid #8b4dff;
+      border-radius: 10px;
+      background: #1a001f;
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    #timer {
+      background: #ff00ff22;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-weight: bold;
+      color: #ffccff;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar.bg-purple {
+      background: linear-gradient(90deg, #8b00d1, #b084f9);
+      transition: width 0.2s linear;
+    }
+
+    #feedback {
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+
+    #score {
+      margin-top: 5px;
+      font-weight: bold;
+    }
+
+    .button {
+      margin-top: 20px;
+      background: #8b00d1;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .button:hover {
+      background: #b300ff;
+      box-shadow: 0 0 10px #fff;
+    }
+      /* Footer base */
+    footer.footer {
+      background-color: #000;
+      box-shadow: 0 0 30px 10px rgba(106, 13, 173, 0.4);
+      border-top: 2px solid rgba(106, 13, 173, 0.5);
+      margin-top: 60px;
+      padding: 40px 0 20px;
+    }
+
+    .footer-link {
+      color: var(--text-light);
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin: 6px 15px;
+    }
+ .dropdown-menu {
+      background: linear-gradient(135deg, var(--primary-purple), #2a2a2a);
+      border: 2px solid var(--primary-purple-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+      padding: 8px 0;
+      min-width: 180px;
+    }
+
+    .dropdown-item {
+      color: var(--text-light) !important;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg,
+          var(--primary-purple-light),
+          var(--primary-purple));
+      color: var(--text-white) !important;
+      transform: translateX(2px);
+      box-shadow: 0 0px 2px rgba(176, 132, 249, 0.3);
+    }
+
+    .footer-link:hover {
+      color: var(--primary-purple-light);
+      text-decoration: underline;
+    }
+
+    .footer .links-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .social-icon {
+      color: var(--text-light);
+      margin: 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .social-icon:hover {
+      color: var(--primary-purple-light);
+      transform: scale(1.2);
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="index.html">SkillSwap</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span><i class="fa fa-bars text-white"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="skills.html">Choose a Skill</a></li>
+          <li class="nav-item"><a class="nav-link" href="find.html">Skill-Matcher</a></li>
+          <li class="nav-item"><a class="nav-link" href="community.html">Community</a></li>
+                              <li class="nav-item"><a class="nav-link" href="story.html">Sucess-Stories</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active " href="#" data-bs-toggle="dropdown">Learning <i
+                class="fas fa-chevron-down ms-1"></i></a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="type.html">TypeSprint</a></li>
+              <li><a class="dropdown-item" href="quiz.html">Quiz</a></li>
+              <li><a class="dropdown-item" href="calendar.html">Skill Calendar</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link " href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="game-container">
+    <h1>⏳ Type to Learn</h1>
+    <div class="progress mb-2" style="height: 20px;">
+      <div id="progressBar" class="progress-bar bg-purple" role="progressbar" style="width:100%;"></div>
+    </div>
+    <div id="timer">Time Left: 10s</div>
+    <div id="sentence"></div>
+    <input type="text" id="userInput" placeholder="Start typing here..." />
+    <div id="feedback"></div>
+    <div id="score">Score: 0</div>
+    <button class="button" onclick="startGame()">🔁 Restart</button>
+  </div>
+
+        <!-- Footer -->
+<footer class="footer text-white">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About / Tagline -->
+      <div class="col-md-4 mb-4 text-center text-md-start">
+        <h5 class="fw-bold footer-heading">SkillSwap</h5>
+        <p class="text-light">Connect, Learn, Grow – Empowering learners and mentors worldwide.</p>
+        <div>
+          <a href="https://www.facebook.com/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://pk.linkedin.com/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="skills.html" class="footer-link">Choose a Skill</a></li>
+          <li><a href="find.html" class="footer-link">Skill-Matcher</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="story.html" class="footer-link">Success Stories</a></li>
+          <li><a href="login.html" class="footer-link">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Section -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Learning</h5>
+        <ul class="list-unstyled">
+          <li><a href="type.html" class="footer-link">TypeSprint</a></li>
+          <li><a href="quiz.html" class="footer-link">Quiz</a></li>
+          <li><a href="calendar.html" class="footer-link">Skill Calendar</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary" />
+
+    <div class="text-center small">
+      &copy; 2025 SkillSwap. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const sentences = [
+      "HTML is the foundation of web pages",
+      "CSS adds beauty and design",
+      "JavaScript makes pages interactive",
+      "Bootstrap speeds up design",
+      "Typing improves productivity",
+      "Learning to code is powerful",
+      "Frontend is user-focused",
+      "Practice makes perfect"
+    ];
+
+    let timer, timeLeft = 10, score = 0;
+    const timerDisplay = document.getElementById("timer");
+    const sentenceDisplay = document.getElementById("sentence");
+    const userInput = document.getElementById("userInput");
+    const feedback = document.getElementById("feedback");
+    const progressBar = document.getElementById("progressBar");
+    const scoreDisplay = document.getElementById("score");
+
+    function startGame() {
+      timeLeft = 10;
+      clearInterval(timer);
+      feedback.textContent = "";
+      userInput.disabled = false;
+      userInput.value = "";
+      scoreDisplay.textContent = "Score: " + score;
+      generateSentence();
+      userInput.focus();
+      updateProgress();
+
+      timer = setInterval(() => {
+        timeLeft--;
+        updateProgress();
+        timerDisplay.textContent = `Time Left: ${timeLeft}s`;
+        if (timeLeft === 0) {
+          clearInterval(timer);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function generateSentence() {
+      const sentence = sentences[Math.floor(Math.random() * sentences.length)];
+      sentenceDisplay.innerHTML = "";
+      sentence.split("").forEach(char => {
+        const span = document.createElement("span");
+        span.textContent = char;
+        sentenceDisplay.appendChild(span);
+      });
+    }
+
+    userInput.addEventListener("input", () => {
+      const input = userInput.value;
+      const spans = sentenceDisplay.querySelectorAll("span");
+      let correct = true;
+      spans.forEach((span, index) => {
+        if (input[index] == null) {
+          span.className = "";
+          correct = false;
+        } else if (input[index] === span.textContent) {
+          span.className = "correct";
+        } else {
+          span.className = "wrong";
+          correct = false;
+        }
+      });
+      if (correct && input.length === spans.length) {
+        feedback.textContent = "✅ Perfect! Moving to next...";
+        feedback.style.color = "#00ffae";
+        score++;
+        setTimeout(startGame, 1000);
+      }
+    });
+
+    function endGame() {
+      userInput.disabled = true;
+      const spans = sentenceDisplay.querySelectorAll("span");
+      spans.forEach(span => {
+        if (!span.className) span.className = "wrong";
+      });
+      feedback.textContent = "⏱ Time's up!";
+      feedback.style.color = "#ff5c8a";
+      scoreDisplay.textContent = "Score: " + score;
+    }
+
+    function updateProgress() {
+      progressBar.style.width = (timeLeft / 10 * 100) + "%";
+    }
+
+    window.onload = startGame;
+  </script>
+</body>
+
+</html>

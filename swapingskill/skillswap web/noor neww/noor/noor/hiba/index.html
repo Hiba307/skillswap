@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkillSwap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon" type="img/png" href="favicon.png">
+
+  <style>
+    :root {
+      --main-bg-gradient: linear-gradient(135deg, #4b0082, #000000);
+      --footer-bg: #000000;
+      --footer-glow: rgba(106, 13, 173, 0.6);
+      --primary-purple: #6a0dad;
+      --primary-purple-light: #b084f9;
+      --text-light: #d1b3ff;
+      --text-white: #fff;
+      --input-bg: #1a1a1a;
+      --input-border: #6a0dad;
+      --footer-bg-gradient: linear-gradient(135deg, #1a0033, #4b0082);
+    }
+
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: var(--main-bg-gradient);
+      scroll-behavior: smooth;
+      color: var(--text-white);
+      margin-top: 0;
+    }
+
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(176, 132, 249, 0.2);
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-1000px) translateX(500px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+
+    /* Scroll progress indicator */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1001;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: linear-gradient(to right, var(--primary-purple), var(--primary-purple-light));
+      width: 0%;
+      transition: width 0.2s ease;
+    }
+
+    /* Modern & Matching Navbar */
+    .navbar {
+      background: transparent;
+      box-shadow: none;
+      transition: background 0.5s ease;
+      padding: 1rem 2rem;
+      z-index: 1000;
+    }
+
+    .navbar.scrolled {
+      background: var(--footer-bg-gradient);
+      box-shadow: 0 4px 15px rgba(106, 13, 173, 0.7);
+    }
+
+    .navbar:hover {
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .navbar.scrolled:hover {
+      background: linear-gradient(135deg, #2a004d, #4b0082);
+      box-shadow: 0 4px 15px rgba(90, 12, 152, 0.7);
+    }
+
+    /* Brand Styling */
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-white) !important;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: var(--primary-purple-light) !important;
+    }
+
+    /* Nav Links */
+    .navbar-nav .nav-link {
+      margin: 0 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-light) !important;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    /* Hover with animation */
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-purple-light) !important;
+      transform: translateY(-2px);
+    }
+
+    /* Underline effect */
+    .navbar-nav .nav-link::after {
+      content: "";
+      display: block;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+      margin-top: 3px;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Active Link Styling */
+    .navbar-nav .nav-link.active {
+      color: #fff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-purple-light);
+    }
+
+    
+    .navbar-toggler {
+      background: none;
+      /* Transparent background */
+      border: none;
+      /* No border */
+      padding: 0.35rem 0.55rem;
+      box-shadow: none;
+      outline: none;
+      /* Remove focus outline */
+    }
+
+    .navbar-toggler:focus,
+    .navbar-toggler:active,
+    .navbar-toggler:not(.collapsed) {
+      background: none !important;
+      border: none !important;
+      box-shadow: none !important;
+      outline: none !important;
+      /* Remove white border on click */
+    }
+
+    /* Hamburger icon */
+    .navbar-toggler .fa-bars {
+      color: #fff;
+      font-size: 1.5rem;
+    }
+
+    /* Optional: remove default Bootstrap toggler icon */
+    .navbar-toggler-icon {
+      display: none;
+      /* hide default Bootstrap icon if using FontAwesome */
+    }
+
+
+    .explore-btn {
+      background: linear-gradient(135deg, #6a0dad, #b084f9);
+      color: #fff;
+      font-size: 1.15rem;
+      font-weight: 600;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 50px;
+      box-shadow: 0 0 15px rgba(186, 136, 255, 0.6),
+        0 0 10px rgba(106, 13, 173, 0.5);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease-in-out;
+      position: relative;
+      z-index: 1;
+    }
+
+    .explore-btn:hover {
+      background: linear-gradient(135deg, #b084f9, #6a0dad);
+      color: #1a0033;
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(186, 136, 255, 0.9),
+        0 0 20px rgba(106, 13, 173, 0.7);
+    }
+
+    .explore-btn::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -75%;
+      width: 50%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      transform: skewX(-20deg);
+      transition: 0.7s;
+      z-index: 0;
+    }
+
+    .explore-btn:hover::after {
+      left: 130%;
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      color: var(--text-white);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 100px 20px;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
+      color: #fff;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.8), 0 1px 2px #000;
+      padding: 40px 20px;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, 0.25);
+    }
+
+    .hero .display-4 {
+      font-weight: 900;
+      font-size: 3rem;
+      letter-spacing: 1px;
+      text-shadow: 0 6px 32px rgba(0, 0, 0, 0.9), 0 2px 4px #000;
+    }
+
+    .hero .lead {
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    /* NEW: Animated text effect */
+    .animated-text {
+      background: linear-gradient(to right, #b084f9, #6a0dad, #b084f9);
+      background-size: 200% auto;
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 3s linear infinite;
+    }
+
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% center;
+      }
+
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* NEW: Floating animation for hero elements */
+    @keyframes floatUpDown {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .floating {
+      animation: floatUpDown 6s ease-in-out infinite;
+    }
+
+    /* Skills Section */
+    #skills {
+      padding: 60px 20px 80px;
+    }
+
+    #skills h2 {
+      margin-bottom: 40px;
+      font-weight: 700;
+      color: var(--text-white);
+    }
+
+    .card {
+      background: rgba(106, 13, 173, 0.8);
+      border-radius: 12px;
+      padding: 25px;
+      color: white;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: transform 0.6s ease;
+      transform: translateX(-100%);
+    }
+
+    .card:hover::before {
+      transform: translateX(100%);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(106, 13, 173, 0.7);
+    }
+
+    .icon {
+      font-size: 3.5rem;
+      color: #b084f9;
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .card:hover .icon {
+      transform: scale(1.2) rotate(5deg);
+      color: #fff;
+    }
+
+    /* NEW: Stats section */
+    .stats-section {
+      padding: 60px 0;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #b084f9;
+      margin-bottom: 10px;
+    }
+
+    /* Testimonials Section */
+    #testimonials {
+      padding: 60px 20px;
+      color: var(--text-white);
+      background: linear-gradient(135deg, #2e004e, #000000);
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(106, 13, 173, 0.8);
+    }
+
+    #testimonials h2 {
+      margin-bottom: 40px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    #testimonials .testimonial-card {
+      background: #1a0033;
+      padding: 25px 20px;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(106, 13, 173, 0.7);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #cbbfff;
+    }
+
+    #testimonials .testimonial-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 35px rgba(106, 13, 173, 1);
+      color: #e4d1ff;
+    }
+
+    #testimonials .testimonial-text {
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+
+    #testimonials small {
+      font-weight: 600;
+      color: #a89cbd;
+      text-align: right;
+      display: block;
+    }
+
+    /* About Section */
+    #about {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-white);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    #about h2 {
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    #about p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #d1b3ff;
+    }
+
+    #contact .form-control {
+      background: var(--input-bg);
+      border: 1.8px solid var(--input-border);
+      color: var(--text-white);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    #contact .form-control::placeholder {
+      color: var(--text-light);
+    }
+
+    #contact .form-control:focus {
+      border-color: var(--primary-purple-light);
+      box-shadow: 0 0 10px var(--primary-purple-light);
+      outline: none;
+    }
+
+    /* More space between Testimonials and Contact Us */
+    #testimonials {
+      margin-bottom: 80px;
+      /* bigger gap below reviews */
+    }
+
+    /* More space between Contact Us and Footer */
+    #contact {
+      padding-top: 60px;
+      /* space above contact form */
+      margin-bottom: 80px;
+      /* extra space before footer */
+    }
+
+    #contact {
+      margin-bottom: 50px;
+      /* default for mobile/tablet */
+    }
+
+    /* Larger gap on bigger screens */
+    @media (min-width: 992px) {
+      #contact {
+        margin-bottom: 100px;
+      }
+    }
+
+    /* Footer base */
+    footer.footer {
+      background-color: #000;
+      box-shadow: 0 0 30px 10px rgba(106, 13, 173, 0.4);
+      border-top: 2px solid rgba(106, 13, 173, 0.5);
+      margin-top: 60px;
+      padding: 40px 0 20px;
+    }
+
+    .footer-link {
+      color: var(--text-light);
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin: 6px 15px;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-purple-light);
+      text-decoration: underline;
+    }
+
+    .footer .links-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .social-icon {
+      color: var(--text-light);
+      margin: 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .social-icon:hover {
+      color: var(--primary-purple-light);
+      transform: scale(1.2);
+    }
+
+    .nav-link.active {
+      color: #fff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-purple-light);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 0.8rem 1rem;
+      }
+
+      #skills .card {
+        margin-bottom: 20px;
+      }
+
+      #contact input[type="email"] {
+        width: 100%;
+      }
+
+      .hero .display-4 {
+        font-size: 2.2rem;
+      }
+
+      .hero .lead {
+        font-size: 1.2rem;
+      }
+    }
+
+    /* NEW: How it works section */
+    .how-it-works {
+      padding: 80px 0;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .step-card {
+      background: linear-gradient(135deg, #1a0033, #2a004d);
+      border-radius: 16px;
+      padding: 30px;
+      color: white;
+      box-shadow: 0 4px 20px rgba(106, 13, 173, 0.3);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(176, 132, 249, 0.2);
+      height: 100%;
+      text-align: center;
+      position: relative;
+    }
+
+    .step-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(186, 136, 255, 0.4);
+    }
+
+    .step-number {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      background: #6a0dad;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 0 10px rgba(106, 13, 173, 0.5);
+    }
+
+    /* NEW: Featured community members */
+    .featured-members {
+      padding: 80px 0;
+    }
+
+    .member-card {
+      background: linear-gradient(135deg, #1a0033, #2a004d);
+      border-radius: 16px;
+      padding: 25px;
+      color: white;
+      box-shadow: 0 4px 20px rgba(106, 13, 173, 0.3);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(176, 132, 249, 0.2);
+      text-align: center;
+    }
+
+    .member-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(186, 136, 255, 0.4);
+    }
+
+    .member-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+      border: 3px solid #b084f9;
+      box-shadow: 0 0 15px rgba(176, 132, 249, 0.5);
+    }
+
+    /* NEW: Newsletter section */
+    .newsletter {
+      padding: 60px 0;
+      background: linear-gradient(135deg, #4b0082, #1a0033);
+    }
+
+    .newsletter input {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid #6a0dad;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 30px;
+      width: 100%;
+      max-width: 400px;
+      margin-right: 10px;
+    }
+
+    .newsletter input::placeholder {
+      color: #d1b3ff;
+    }
+
+    /* NEW: Back to top button */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: #6a0dad;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      box-shadow: 0 0 15px rgba(106, 13, 173, 0.5);
+      transition: all 0.3s ease;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .back-to-top:hover {
+      background: #b084f9;
+      transform: translateY(-5px);
+    }
+
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+      background: linear-gradient(135deg, var(--primary-purple), #2a2a2a);
+      border: 2px solid var(--primary-purple-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+      padding: 8px 0;
+      min-width: 180px;
+    }
+
+    .dropdown-item {
+      color: var(--text-light) !important;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg,
+          var(--primary-purple-light),
+          var(--primary-purple));
+      color: var(--text-white) !important;
+      transform: translateX(2px);
+      box-shadow: 0 0px 2px rgba(176, 132, 249, 0.3);
+    }
+
+    /* Form validation styles */
+    .text-danger {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated background particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Custom cursor elements -->
+  <div class="cursor-dot"></div>
+  <div class="cursor-outline"></div>
+
+  <!-- Scroll progress indicator -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Back to top button -->
+  <a href="#" class="back-to-top">
+    <i class="fas fa-arrow-up"></i>
+  </a>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="index.html">SkillSwap</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span><i class="fa fa-bars text-white"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link active" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="skills.html">Choose a Skill</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="find.html">Skill-Matcher</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="community.html">Community</a>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="story.html">Success Stories</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Learning <i class="fas fa-chevron-down ms-1"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="type.html">TypeSprint</a></li>
+              <li><a class="dropdown-item" href="quiz.html">Quiz</a></li>
+              <li>
+                <a class="dropdown-item" href="calendar.html">Skill Calendar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero position-relative">
+    <video autoplay loop muted playsinline class="hero-video">
+      <source src="bg2.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="overlay"></div>
+    <div class="container" data-aos="fade-up">
+      <h1 class="display-4 fw-bold mb-4 floating">
+        Find, Learn, and Share Skills with Our Vibrant Community
+      </h1>
+      <p class="lead mb-4">
+        Join SkillSwap to connect, collaborate, and grow your talents
+      </p>
+      <a href="skills.html" class="btn explore-btn floating">Explore Skills</a>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="100">
+          <div class="stat-item">
+            <div class="stat-number" id="memberCount">5000+</div>
+            <p>Active Members</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="200">
+          <div class="stat-item">
+            <div class="stat-number" id="skillCount">120+</div>
+            <p>Skills Shared</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="300">
+          <div class="stat-item">
+            <div class="stat-number" id="successCount">850+</div>
+            <p>Success Stories</p>
+          </div>
+        </div>
+        <div class="col-md-3 col-6" data-aos="fade-up" data-aos-delay="400">
+          <div class="stat-item">
+            <div class="stat-number" id="eventCount">45+</div>
+            <p>Community Events</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section id="skills" class="container">
+    <h2 data-aos="fade-right" class="animated-text">Popular Skills</h2>
+    <div class="row g-4">
+      <div class="col-lg-3 col-md-6" data-aos="fade-up">
+        <a href="skills.html" class="text-decoration-none text-white">
+          <div class="card skill-card">
+            <i class="fa-solid fa-paintbrush icon"></i>
+            <h5>Graphic Designing</h5>
+            <p>
+              Bring ideas to life through stunning visuals and creative
+              design.
+            </p>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <a href="skills.html" class="text-decoration-none text-white">
+          <div class="card skill-card">
+            <i class="fa-solid fa-code icon"></i>
+            <h5>Web Development</h5>
+            <p>
+              Build responsive websites and engaging web apps with modern
+              technologies.
+            </p>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <a href="skills.html" class="text-decoration-none text-white">
+          <div class="card skill-card">
+            <i class="fa-solid fa-bullhorn icon"></i>
+            <h5>Digital Marketing</h5>
+            <p>
+              Boost brands and reach audiences through strategic digital
+              campaigns.
+            </p>
+          </div>
+        </a>
+      </div>
+      <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+        <a href="skills.html" class="text-decoration-none text-white">
+          <div class="card skill-card">
+            <i class="fa-solid fa-language icon"></i>
+            <h5>Speaking Languages</h5>
+            <p>
+              Learn new languages and communicate across cultures
+              effortlessly.
+            </p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="text-center mb-5" data-aos="fade-up">How SkillSwap Works</h2>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <div class="icon mb-3"><i class="fas fa-search fa-2x"></i></div>
+            <h4>Find Your Skill</h4>
+            <p>Browse through hundreds of skills and find what you want to learn or teach</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <div class="icon mb-3"><i class="fas fa-handshake fa-2x"></i></div>
+            <h4>Connect with Others</h4>
+            <p>Match with people who want to learn what you teach and vice versa</p>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <div class="icon mb-3"><i class="fas fa-graduation-cap fa-2x"></i></div>
+            <h4>Start Learning & Teaching</h4>
+            <p>Schedule sessions, share knowledge, and grow together</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Community Members -->
+  <section class="featured-members">
+    <div class="container">
+      <h2 class="text-center mb-5" data-aos="fade-up">Featured Community Members</h2>
+      <div class="row g-4">
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+          <div class="member-card">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah">
+            <h4>Sarah Khan</h4>
+            <p>Graphic Designer</p>
+            <div class="mt-3">
+              <span class="badge bg-purple">Teaches: Photoshop</span>
+              <span class="badge bg-secondary ms-1">Learns: Spanish</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+          <div class="member-card">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ali">
+            <h4>Ali Raza</h4>
+            <p>Web Developer</p>
+            <div class="mt-3">
+              <span class="badge bg-purple">Teaches: JavaScript</span>
+              <span class="badge bg-secondary ms-1">Learns: UI/UX Design</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+          <div class="member-card">
+            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Ayesha">
+            <h4>Ayesha Noor</h4>
+            <p>Digital Marketer</p>
+            <div class="mt-3">
+              <span class="badge bg-purple">Teaches: SEO</span>
+              <span class="badge bg-secondary ms-1">Learns: Photography</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <div class="container">
+      <h2 data-aos="fade-up">About SkillSwap</h2>
+      <p data-aos="fade-up" data-aos-delay="100">
+        SkillSwap is a community-driven platform that empowers individuals to
+        exchange knowledge and learn new skills together. Whether you are a
+        beginner or an expert, SkillSwap connects you with others passionate
+        about growth and collaboration.
+      </p>
+    </div>
+  </section>
+
+  <!-- Testimonials Carousel Section -->
+  <section id="testimonials" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="text-center mb-5" data-aos="fade-up">
+        What Our Members Say
+      </h2>
+
+      <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel" data-aos="zoom-in">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle mb-3" width="80"
+                height="80" alt="Sarah" />
+              <h5>Sarah Khan</h5>
+              <p class="text-muted mb-1">Graphic Designer</p>
+              <div class="mb-2 text-warning">★★★★☆</div>
+              <p class="fst-italic w-75">
+                "SkillSwap helped me connect with passionate learners. I've
+                grown both professionally and personally!"
+              </p>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" class="rounded-circle mb-3" width="80"
+                height="80" alt="Ali" />
+              <h5>Ali Raza</h5>
+              <p class="text-muted mb-1">Web Developer</p>
+              <div class="mb-2 text-warning">★★★★★</div>
+              <p class="fst-italic w-75">
+                "It's amazing how easy it is to exchange skills here. I found
+                a language partner and a coding mentor!"
+              </p>
+            </div>
+          </div>
+
+          <div class="carousel-item">
+            <div class="d-flex flex-column align-items-center text-center">
+              <img src="https://randomuser.me/api/portraits/women/68.jpg" class="rounded-circle mb-3" width="80"
+                height="80" alt="Ayesha" />
+              <h5>Ayesha Noor</h5>
+              <p class="text-muted mb-1">Digital Marketer</p>
+              <div class="mb-2 text-warning">★★★★☆</div>
+              <p class="fst-italic w-75">
+                "SkillSwap's community is so supportive! I love how everyone's
+                here to learn and grow together."
+              </p>
+            </div>
+          </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon bg-dark rounded-circle" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon bg-dark rounded-circle" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- Contact Section -->
+  <section id="contact">
+    <div class="container" data-aos="fade-up">
+      <h2 class="mb-4">Contact Us</h2>
+      <p class="mb-5 text-light">
+        Have questions or suggestions? We'd love to hear from you! Fill out the form below or connect with us directly.
+      </p>
+
+      <div class="row g-5">
+        <!-- Contact Info -->
+        <div class="col-lg-4 d-flex flex-column justify-content-center">
+          <div class="mb-4">
+            <i class="fa-solid fa-envelope fa-lg text-primary me-2"></i>
+            <span>support@skillswap.com</span>
+          </div>
+          <div class="mb-4">
+            <i class="fa-solid fa-phone fa-lg text-primary me-2"></i>
+            <span>+92 300 1234567</span>
+          </div>
+          <div>
+            <i class="fa-solid fa-location-dot fa-lg text-primary me-2"></i>
+            <span>Karachi, Pakistan</span>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+          <form id="contactForm" novalidate>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <input type="text" class="form-control" id="nameInput" placeholder="Your Name" required />
+                <small class="text-danger d-none" id="nameError">Name must be at least 3 letters.</small>
+              </div>
+              <div class="col-md-6">
+                <input type="email" class="form-control" id="emailInput" placeholder="Your Email" required />
+                <small class="text-danger d-none" id="emailError">Enter a valid email address.</small>
+              </div>
+              <div class="col-12">
+                <input type="text" class="form-control" id="subjectInput" placeholder="Subject" required />
+                <small class="text-danger d-none" id="subjectError">Subject must be at least 5 characters.</small>
+              </div>
+              <div class="col-12">
+                <textarea class="form-control" id="messageInput" rows="5" placeholder="Your Message"
+                  required></textarea>
+                <small class="text-danger d-none" id="messageError">Message must be at least 10 characters.</small>
+              </div>
+            </div>
+            <div class="mt-4">
+              <button type="submit" class="btn explore-btn">Send Message</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+         <!-- Footer -->
+<footer class="footer text-white">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About / Tagline -->
+      <div class="col-md-4 mb-4 text-center text-md-start">
+        <h5 class="fw-bold footer-heading">SkillSwap</h5>
+        <p class="text-light">Connect, Learn, Grow – Empowering learners and mentors worldwide.</p>
+        <div>
+          <a href="https://www.facebook.com/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://pk.linkedin.com/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="skills.html" class="footer-link">Choose a Skill</a></li>
+          <li><a href="find.html" class="footer-link">Skill-Matcher</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="story.html" class="footer-link">Success Stories</a></li>
+          <li><a href="login.html" class="footer-link">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Section -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Learning</h5>
+        <ul class="list-unstyled">
+          <li><a href="type.html" class="footer-link">TypeSprint</a></li>
+          <li><a href="quiz.html" class="footer-link">Quiz</a></li>
+          <li><a href="calendar.html" class="footer-link">Skill Calendar</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary" />
+
+    <div class="text-center small">
+      &copy; 2025 SkillSwap. All rights reserved.
+    </div>
+  </div>
+</footer>
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    // Initialize AOS animation library
+    AOS.init({ duration: 1000, once: true });
+
+    // Create animated background particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const numberOfParticles = 25;
+
+      for (let i = 0; i < numberOfParticles; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random size, position, and animation delay
+        const size = Math.random() * 20 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const animationDelay = Math.random() * 15;
+
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}vw`;
+        particle.style.top = `${posY}vh`;
+        particle.style.animationDelay = `${animationDelay}s`;
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Custom cursor
+    const cursorDot = document.querySelector('.cursor-dot');
+    const cursorOutline = document.querySelector('.cursor-outline');
+
+    document.addEventListener('mousemove', (e) => {
+      cursorDot.style.left = `${e.clientX}px`;
+      cursorDot.style.top = `${e.clientY}px`;
+
+      cursorOutline.animate({
+        left: `${e.clientX}px`,
+        top: `${e.clientY}px`
+      }, { duration: 500, fill: 'forwards' });
+    });
+
+    // Change cursor on interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .card, .nav-link, .dropdown-item, .explore-btn, .social-icon');
+
+    interactiveElements.forEach(element => {
+      element.addEventListener('mouseenter', () => {
+        cursorDot.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        cursorOutline.style.transform = 'translate(-50%, -50%) scale(1.5)';
+        cursorOutline.style.borderWidth = '1px';
+      });
+
+      element.addEventListener('mouseleave', () => {
+        cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursorOutline.style.transform = 'translate(-50%, -50%) scale(1)';
+        cursorOutline.style.borderWidth = '2px';
+      });
+    });
+
+    // Scroll progress indicator
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+
+      // Show/hide back to top button
+      const backToTop = document.querySelector('.back-to-top');
+      if (winScroll > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+
+      // Navbar background on scroll
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Animate stats counting
+    function animateStats() {
+      const statElements = document.querySelectorAll('.stat-number');
+      const values = [5000, 120, 850, 45];
+      const durations = [2000, 1500, 1800, 1200];
+
+      statElements.forEach((element, index) => {
+        const target = values[index];
+        const duration = durations[index];
+        let start = 0;
+        const increment = target / (duration / 16);
+
+        const updateCount = () => {
+          start += increment;
+          if (start < target) {
+            element.textContent = Math.floor(start) + '+';
+            setTimeout(updateCount, 16);
+          } else {
+            element.textContent = target + '+';
+          }
+        };
+
+        updateCount();
+      });
+    }
+
+    // Contact form validation
+    const contactForm = document.getElementById("contactForm");
+
+    contactForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      // Get inputs
+      const name = document.getElementById("nameInput").value.trim();
+      const email = document.getElementById("emailInput").value.trim();
+      const subject = document.getElementById("subjectInput").value.trim();
+      const message = document.getElementById("messageInput").value.trim();
+
+      // Error elements
+      const nameError = document.getElementById("nameError");
+      const emailError = document.getElementById("emailError");
+      const subjectError = document.getElementById("subjectError");
+      const messageError = document.getElementById("messageError");
+
+      // Regex rules
+      const nameRegex = /^[A-Za-z\s]{3,}$/;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const subjectRegex = /^.{5,}$/;
+      const messageRegex = /^.{10,}$/;
+
+      let valid = true;
+
+      // Validate Name
+      if (!nameRegex.test(name)) {
+        nameError.classList.remove("d-none");
+        valid = false;
+      } else {
+        nameError.classList.add("d-none");
+      }
+
+      // Validate Email
+      if (!emailRegex.test(email)) {
+        emailError.classList.remove("d-none");
+        valid = false;
+      } else {
+        emailError.classList.add("d-none");
+      }
+
+      // Validate Subject
+      if (!subjectRegex.test(subject)) {
+        subjectError.classList.remove("d-none");
+        valid = false;
+      } else {
+        subjectError.classList.add("d-none");
+      }
+
+      // Validate Message
+      if (!messageRegex.test(message)) {
+        messageError.classList.remove("d-none");
+        valid = false;
+      } else {
+        messageError.classList.add("d-none");
+      }
+
+      // If valid, open mail client + reset form
+      if (valid) {
+        const mailtoLink = `mailto:support@skillswap.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+          "Hello,\n\nMy name is " + name + " (" + email + ").\n\n" + message + "\n\nThanks."
+        )}`;
+
+        window.location.href = mailtoLink;
+
+        // Success message
+        alert("Thank you for contacting us, " + name + "! We'll get back to you soon.");
+
+        // Refresh form after submit
+        contactForm.reset();
+      }
+    });
+
+    // Highlight active nav link
+    const currentLocation = window.location.href;
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+    navLinks.forEach((link) => {
+      if (
+        link.href === currentLocation ||
+        currentLocation.includes(link.getAttribute("href"))
+      ) {
+        link.classList.add("active");
+      }
+    });
+
+    // Initialize particles when page loads
+    window.addEventListener('DOMContentLoaded', (event) => {
+      createParticles();
+
+      // Animate stats when they come into view
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateStats();
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      observer.observe(document.querySelector('.stats-section'));
+    });
+  </script>
+</body>
+
+</html>

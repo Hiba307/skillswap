@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SkillSwap - Calendar</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="icon" type="img/png" href="favicon.png">
+
+  <style>
+    :root {
+      --primary-purple: #6a0dad;
+      --primary-purple-light: #b084f9;
+      --text-white: #ffffff;
+      --text-light: #cccccc;
+      --footer-bg-gradient: linear-gradient(135deg, #6a0dad, #1a1a1a);
+    }
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      /* Space for fixed navbar */
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #4b0082, #000000);
+      color: #f0eaff;
+      min-height: 100vh;
+      scroll-behavior: smooth;
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+      min-height: calc(100vh - 160px);
+      /* Adjust for navbar and footer */
+    }
+
+    .calendar-container {
+      background: #1a002a;
+      border-radius: 12px;
+      padding: 20px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 0 20px #9b5cffaa;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #c793ff;
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .calendar-day {
+      background: #3a006b;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .calendar-day:hover {
+      background: #7a2cff;
+    }
+
+    .calendar-day.today {
+      border: 2px solid #fff8;
+    }
+
+    .event-form {
+      margin-top: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 60px;
+      border-radius: 8px;
+      padding: 10px;
+      border: none;
+      font-size: 1rem;
+      background: #30004c;
+      color: #fff;
+    }
+
+    button,
+    .add-gcal {
+      background: #a84dff;
+      border: none;
+      padding: 10px 20px;
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover,
+    .add-gcal:hover {
+      background: #c38dff;
+    }
+
+    .event-list {
+      margin-top: 25px;
+    }
+
+    .event-item {
+      background: #500080;
+      padding: 10px;
+      border-radius: 6px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .event-date {
+      font-weight: bold;
+      color: #ffd6ff;
+      margin-bottom: 6px;
+    }
+
+    .add-gcal {
+      font-size: 0.9rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    @media (max-width: 480px) {
+      .calendar-day {
+        font-size: 0.9rem;
+        padding: 10px 5px;
+      }
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      background: var(--footer-bg-gradient);
+      box-shadow: 0 4px 15px rgba(106, 13, 173, 0.7);
+      transition: background 0.5s ease;
+      padding: 1rem 2rem;
+      z-index: 1000;
+    }
+
+    .navbar:hover {
+      background: linear-gradient(135deg, #2a004d, #4b0082);
+      box-shadow: 0 4px 15px rgba(90, 12, 152, 0.7);
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-white) !important;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: var(--primary-purple-light) !important;
+    }
+
+    .navbar-nav .nav-link {
+      margin: 0 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-light) !important;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-purple-light) !important;
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link::after {
+      content: "";
+      display: block;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+      margin-top: 3px;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: var(--text-white) !important;
+      font-weight: bold;
+      border-bottom: 3px solid var(--primary-purple-light);
+      padding-bottom: 6px;
+    }
+
+    .navbar-toggler-icon {
+      color: var(--text-light);
+      font-size: 1.2rem;
+    }
+
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+      background: linear-gradient(135deg, var(--primary-purple), #2a2a2a);
+      border: 2px solid var(--primary-purple-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+      padding: 8px 0;
+      min-width: 180px;
+    }
+
+    .dropdown-item {
+      color: var(--text-light) !important;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg,
+          var(--primary-purple-light),
+          var(--primary-purple));
+      color: var(--text-white) !important;
+      transform: translateX(2px);
+      box-shadow: 0 0px 2px rgba(176, 132, 249, 0.3);
+    }
+
+    /* Footer Styles */
+    footer.footer {
+      background-color: #000;
+      box-shadow: 0 0 30px 10px rgba(106, 13, 173, 0.4);
+      border-top: 2px solid rgba(106, 13, 173, 0.5);
+      margin-top: 60px;
+      padding: 40px 0 20px;
+    }
+
+    .footer-link {
+      color: #deb9f3;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin: 6px 15px;
+    }
+
+    .footer-link:hover {
+      color: #bc95ec;
+      text-decoration: underline;
+    }
+
+    .footer .links-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .social-icon {
+      color: #bc95ec;
+      margin: 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .social-icon:hover {
+      color: var(--primary-purple-light);
+      transform: scale(1.2);
+    }
+
+    @media (max-width: 768px) {
+      .navbar-nav .nav-link {
+        margin: 10px 0;
+        text-align: center;
+      }
+
+      .navbar {
+        padding: 0.8rem 1rem;
+      }
+    }
+    .navbar-toggler {
+  background: none;       /* Transparent background */
+  border: none;           /* No border */
+  padding: 0.35rem 0.55rem;
+  box-shadow: none;
+  outline: none;          /* Remove focus outline */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:not(.collapsed) {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;  /* Remove white border on click */
+}
+
+/* Hamburger icon */
+.navbar-toggler .fa-bars {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="index.html">SkillSwap</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <i class="fa fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="skills.html">Choose a Skill</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="find.html">Find Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="community.html">Community</a>
+          </li>
+                              <li class="nav-item"><a class="nav-link" href="story.html">Sucess-Stories</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Learning <i class="fas fa-chevron-down ms-1"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="type.html">TypeSprint</a></li>
+              <li><a class="dropdown-item" href="quiz.html">Quiz</a></li>
+              <li>
+                <a class="dropdown-item" href="calendar.html">Skill Calendar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="calendar-container">
+      <h2>📅 Skill Swap Calendar</h2>
+      <div class="calendar" id="calendar"></div>
+      <div class="event-form" id="eventForm" style="display: none">
+        <p id="selectedDate"></p>
+        <textarea id="eventText" placeholder="e.g., Swap Python with Alex @ 5 PM"></textarea>
+        <button onclick="saveEvent()">Save Event</button>
+      </div>
+      <div class="event-list" id="eventList"></div>
+    </div>
+  </div>
+
+ 
+         <!-- Footer -->
+<footer class="footer text-white">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About / Tagline -->
+      <div class="col-md-4 mb-4 text-center text-md-start">
+        <h5 class="fw-bold footer-heading">SkillSwap</h5>
+        <p class="text-light">Connect, Learn, Grow – Empowering learners and mentors worldwide.</p>
+        <div>
+          <a href="https://www.facebook.com/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://pk.linkedin.com/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="skills.html" class="footer-link">Choose a Skill</a></li>
+          <li><a href="find.html" class="footer-link">Skill-Matcher</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="story.html" class="footer-link">Success Stories</a></li>
+          <li><a href="login.html" class="footer-link">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Section -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Learning</h5>
+        <ul class="list-unstyled">
+          <li><a href="type.html" class="footer-link">TypeSprint</a></li>
+          <li><a href="quiz.html" class="footer-link">Quiz</a></li>
+          <li><a href="calendar.html" class="footer-link">Skill Calendar</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary" />
+
+    <div class="text-center small">
+      &copy; 2025 SkillSwap. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const calendarEl = document.getElementById("calendar");
+    const eventForm = document.getElementById("eventForm");
+    const selectedDateEl = document.getElementById("selectedDate");
+    const eventText = document.getElementById("eventText");
+    const eventList = document.getElementById("eventList");
+    const today = new Date();
+    let currentMonth = today.getMonth(),
+      currentYear = today.getFullYear(),
+      selectedDate = null;
+    let events = JSON.parse(localStorage.getItem("skillSwapEvents")) || [];
+
+    function generateCalendar(m, y) {
+      calendarEl.innerHTML = "";
+      const daysInMonth = new Date(y, m + 1, 0).getDate();
+      const firstDay = new Date(y, m, 1).getDay();
+      for (let i = 0; i < firstDay; i++) {
+        calendarEl.appendChild(document.createElement("div"));
+      }
+      for (let d = 1; d <= daysInMonth; d++) {
+        const cell = document.createElement("div");
+        cell.className = "calendar-day";
+        cell.innerText = d;
+        const cellDate = `${y}-${String(m + 1).padStart(2, "0")}-${String(
+          d
+        ).padStart(2, "0")}`;
+        if (cellDate === formatDate(new Date())) cell.classList.add("today");
+        cell.addEventListener("click", () => {
+          selectedDate = cellDate;
+          selectedDateEl.innerText = "Selected: " + cellDate;
+          eventText.value = "";
+          eventForm.style.display = "block";
+        });
+        calendarEl.appendChild(cell);
+      }
+    }
+    function formatDate(date) {
+      return date.toISOString().split("T")[0];
+    }
+    function saveEvent() {
+      if (!selectedDate || !eventText.value.trim()) return;
+      events.push({ date: selectedDate, text: eventText.value.trim() });
+      localStorage.setItem("skillSwapEvents", JSON.stringify(events));
+      renderEvents();
+      eventText.value = "";
+      eventForm.style.display = "none";
+    }
+    function renderEvents() {
+      eventList.innerHTML = "<h4>🗓️ Upcoming Swaps</h4>";
+      if (events.length === 0) {
+        eventList.innerHTML += '<p style="color:#aaa;">No events yet.</p>';
+        return;
+      }
+      events
+        .slice()
+        .reverse()
+        .forEach((evt) => {
+          const div = document.createElement("div");
+          div.className = "event-item";
+          div.innerHTML = `<div>
+                         <div class="event-date">${evt.date}</div>
+                         <div>${evt.text}</div>
+                       </div>`;
+          // add-to-Google link
+          const url = buildGCalUrl(evt);
+          const a = document.createElement("a");
+          a.className = "add-gcal";
+          a.href = url;
+          a.target = "_blank";
+          a.textContent = "+ Add to Google Calendar";
+          div.appendChild(a);
+          eventList.appendChild(div);
+        });
+    }
+    function buildGCalUrl(evt) {
+      const name = encodeURIComponent("Skill Swap");
+      const details = encodeURIComponent(evt.text);
+      const start = evt.date.replace(/-/g, "") + "T090000Z";
+      const end = evt.date.replace(/-/g, "") + "T100000Z";
+      const dates = `${start}/${end}`;
+      return `https://www.google.com/calendar/render?action=TEMPLATE&text=${name}&dates=${dates}&details=${details}`;
+    }
+
+    generateCalendar(currentMonth, currentYear);
+    renderEvents();
+
+    // Highlight active nav link
+    const currentLocation = window.location.href;
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+
+    navLinks.forEach((link) => {
+      if (
+        link.href === currentLocation ||
+        currentLocation.includes(link.getAttribute("href"))
+      ) {
+        link.classList.add("active");
+      }
+    });
+  </script>
+</body>
+
+</html>

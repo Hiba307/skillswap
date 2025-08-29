@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Success Stories - SkillSwap</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <!-- Font Awesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link rel="icon" type="img/png" href="favicon.png">
+
+  <style>
+  :root {
+    --main-bg-gradient: linear-gradient(270deg, #4b0082, #6a0dad, #1c1c1c, #4b0082);
+    --footer-bg: #000000;
+    --footer-glow: rgba(106, 13, 173, 0.6);
+    --primary-purple: #6a0dad;
+    --primary-purple-light: #b084f9;
+    --text-light: #d1b3ff;
+    --text-white: #fff;
+    --input-bg: #1a1a1a;
+    --input-border: #6a0dad;
+    --footer-bg-gradient: linear-gradient(135deg, #1a0033, #4b0082);
+  }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, rgba(106,13,173,0.9), rgba(0,0,0,0.95)),
+                url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+    color: #fff;
+    min-height: 100vh;
+  }
+
+/* Modern & Matching Navbar */
+    .navbar {
+      background: var(--footer-bg-gradient);
+      /* Same gradient as footer */
+      box-shadow: 0 4px 15px rgba(106, 13, 173, 0.7);
+      transition: background 0.5s ease;
+      padding: 1rem 2rem;
+      z-index: 1000;
+    }
+
+    .navbar:hover {
+      background: linear-gradient(135deg, #2a004d, #4b0082);
+      box-shadow: 0 4px 15px rgba(90, 12, 152, 0.7);
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-white) !important;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: var(--primary-purple-light) !important;
+    }
+
+    .navbar-nav .nav-link {
+      margin: 0 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-light) !important;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-purple-light) !important;
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+      margin-top: 3px;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #fff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-purple-light);
+    }
+
+/* ✅ Simple white navbar toggler - no hover/click effects */
+.navbar-toggler {
+  background: none;       /* Transparent background */
+  border: none;           /* No border */
+  padding: 0.35rem 0.55rem;
+  box-shadow: none;
+  outline: none;          /* Remove focus outline */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:not(.collapsed) {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;  /* Prevent white border on click */
+}
+
+/* Hamburger icon in white */
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  width: 30px;
+  height: 24px;
+}
+
+
+    @media (max-width: 768px) {
+      .navbar-nav .nav-link {
+        margin: 10px 0;
+        text-align: center;
+      }
+
+      .navbar {
+        padding: 0.8rem 1rem;
+      }
+    }
+
+  /* Hero Section */
+  .hero {
+    position: relative;
+    background: linear-gradient(135deg, rgba(106, 13, 173, 0.85), rgba(0, 0, 0, 0.85)),
+                url('https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1600&q=80') no-repeat center/cover;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+    border-bottom: 2px solid #6a0dad;
+  }
+  .hero h1 { font-size: 3.5rem; font-weight: 700; line-height: 1.2; }
+  .hero p { font-size: 1.25rem; max-width: 700px; margin-top: 15px; }
+
+  /* Story Cards */
+  .story-card {
+    background: rgba(20,20,20,0.7);
+    backdrop-filter: blur(8px);
+    border: 1px solid #6a0dad;
+    border-radius: 15px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    height: 100%;
+  }
+  .story-card:hover { transform: translateY(-8px); box-shadow: 0 8px 20px rgba(106, 13, 173, 0.7); }
+  .story-card img { border-radius: 50%; width: 80px; height: 80px; border: 2px solid #6a0dad; margin-bottom: 10px; }
+  .story-card h4 { margin-top: 10px; font-size: 18px; }
+
+  /* Buttons */
+  .btn-purple {
+    background: linear-gradient(135deg, #6a0dad, #3b0a6f);
+    color: #fff;
+    border-radius: 50px;
+    padding: 10px 20px;
+    border: none;
+  }
+  .btn-purple:hover { background: linear-gradient(135deg, #8e3fd1, #4b0f80); }
+
+  /* Form Section */
+  .form-section {
+    background: rgba(15,15,15,0.85);
+    border-radius: 15px;
+    padding: 40px;
+    margin-top: 50px;
+    border: 1px solid #6a0dad;
+  }
+  .form-control { background: #1a1a1a; border: 1px solid #6a0dad; color: #fff; }
+  .form-control:focus { border-color: #8e3fd1; box-shadow: none; color: #fff; }
+.form-control {
+  background: #1a1a1a; /* dark background */
+  border: 1px solid #6a0dad;
+  color: #fff;
+}
+
+.form-control:focus {
+  border-color: #8e3fd1;
+  box-shadow: none;
+  color: #fff;
+  background: #1a1a1a; /* ensure focus doesn't turn it white */
+}
+
+/* Remove browser autofill white background */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #1a1a1a inset;
+  -webkit-text-fill-color: #fff;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+  /* Footer */
+  footer.footer {
+    background-color: #000;
+    box-shadow: 0 0 30px 10px rgba(106, 13, 173, 0.4);
+    border-top: 2px solid rgba(106, 13, 173, 0.5);
+    margin-top: 60px;
+    padding: 40px 0 20px;
+    text-align: center;
+  }
+
+  .footer-link {
+    color: var(--text-light);
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    margin: 6px 15px;
+  }
+  .footer-link:hover {
+    color: var(--primary-purple-light);
+    text-decoration: underline;
+  }
+
+  .social-icon {
+    color: var(--text-light);
+    margin: 0 10px;
+    font-size: 1.5rem;
+  }
+  .social-icon:hover {
+    color: var(--primary-purple-light);
+    transform: scale(1.2);
+  }
+
+  /* Scroll Animation */
+  .scroll-animate { opacity: 0; transform: translateY(40px); transition: all 0.8s ease-out; }
+  .scroll-animate.show { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 2.2rem; }
+    .hero p { font-size: 1rem; }
+  }
+   /* Dropdown Menu Styling */
+    .dropdown-menu {
+      background: linear-gradient(135deg, var(--primary-purple), #2a2a2a);
+      border: 2px solid var(--primary-purple-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+      padding: 8px 0;
+      min-width: 180px;
+    }
+
+    .dropdown-item {
+      color: var(--text-light) !important;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg,
+          var(--primary-purple-light),
+          var(--primary-purple));
+      color: var(--text-white) !important;
+      transform: translateX(2px);
+      box-shadow: 0 0px 2px rgba(176, 132, 249, 0.3);
+    }
+
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="index.html">SkillSwap</a>
+     <!-- ✅ Clean Navbar Toggler -->
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+  aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="skills.html">Choose a Skill</a></li>
+          <li class="nav-item"><a class="nav-link" href="find.html">Skill-Matcher</a></li>
+          <li class="nav-item"><a class="nav-link" href="community.html">Community</a></li>
+          <li class="nav-item"><a class="nav-link active" href="story.html">Success-Stories</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Learning <i class="fas fa-chevron-down ms-1"></i></a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="type.html">TypeSprint</a></li>
+              <li><a class="dropdown-item" href="quiz.html">Quiz</a></li>
+              <li><a class="dropdown-item" href="calendar.html">Skill Calendar</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link " href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero text-center scroll-animate">
+    <div>
+      <h1>Success Stories</h1>
+      <p>Discover how learners achieved their goals with SkillSwap 🚀</p>
+      <a href="#storiesContainer" class="btn btn-purple">Read Stories</a>
+    </div>
+  </section>
+
+  <!-- Stories -->
+  <section class="container py-5 scroll-animate">
+    <div class="row g-4" id="storiesContainer"></div>
+  </section>
+
+  <!-- Write Story Form -->
+  <section class="container form-section scroll-animate">
+    <h2 class="text-center mb-4">Write Your Success Story ✨</h2>
+    <form id="storyForm" novalidate>
+      <div class="mb-3">
+        <label for="name" class="form-label">Your Name</label>
+        <input type="text" class="form-control" id="name" placeholder="Enter your name">
+        <small id="nameError" class="text-danger d-none"></small>
+      </div>
+      <div class="mb-3">
+        <label for="photo" class="form-label">Your Photo (URL)</label>
+        <input type="url" class="form-control" id="photo" placeholder="Enter image URL (optional)">
+        <small id="photoError" class="text-danger d-none"></small>
+      </div>
+      <div class="mb-3">
+        <label for="story" class="form-label">Your Story</label>
+        <textarea class="form-control" id="story" rows="4" placeholder="Share your journey..."></textarea>
+        <small id="storyError" class="text-danger d-none"></small>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-purple">Submit Story</button>
+      </div>
+    </form>
+  </section>
+
+
+         <!-- Footer -->
+<footer class="footer text-white">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About / Tagline -->
+      <div class="col-md-4 mb-4 text-center text-md-start">
+        <h5 class="fw-bold footer-heading">SkillSwap</h5>
+        <p class="text-light">Connect, Learn, Grow – Empowering learners and mentors worldwide.</p>
+        <div>
+          <a href="https://www.facebook.com/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://pk.linkedin.com/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="skills.html" class="footer-link">Choose a Skill</a></li>
+          <li><a href="find.html" class="footer-link">Skill-Matcher</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="story.html" class="footer-link">Success Stories</a></li>
+          <li><a href="login.html" class="footer-link">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Section -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Learning</h5>
+        <ul class="list-unstyled">
+          <li><a href="type.html" class="footer-link">TypeSprint</a></li>
+          <li><a href="quiz.html" class="footer-link">Quiz</a></li>
+          <li><a href="calendar.html" class="footer-link">Skill Calendar</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary" />
+
+    <div class="text-center small">
+      &copy; 2025 SkillSwap. All rights reserved.
+    </div>
+  </div>
+</footer>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+  // ✅ Scroll Animations
+  const elements = document.querySelectorAll('.scroll-animate');
+  function checkScroll() {
+    const triggerBottom = window.innerHeight * 0.85;
+    elements.forEach(el => {
+      const boxTop = el.getBoundingClientRect().top;
+      if (boxTop < triggerBottom) { el.classList.add('show'); }
+    });
+  }
+  window.addEventListener('scroll', checkScroll);
+  checkScroll();
+
+  // ✅ Stories rendering
+  const container = document.getElementById("storiesContainer");
+  const defaultStories = [
+    {name: "Ayesha Khan", photo: "https://i.pravatar.cc/150?img=47", story: "I learned web development through SkillSwap. Now I’m working as a freelancer and earning regularly!", isMine: false},
+    {name: "John Smith", photo: "https://i.pravatar.cc/150?img=12", story: "The challenges boosted my confidence. I cracked my first internship as a Frontend Developer!", isMine: false},
+    {name: "Sara Ali", photo: "https://i.pravatar.cc/150?img=33", story: "From beginner to pro! SkillSwap helped me build my portfolio and land my dream job.", isMine: false},
+  ];
+  let stories = JSON.parse(localStorage.getItem("stories")) || defaultStories;
+  function renderStories() {
+    container.innerHTML = "";
+    stories.forEach((s, index) => {
+      let editBtn = s.isMine ? `<button class="btn btn-sm btn-secondary position-absolute top-0 end-0 m-2" onclick="editStory(${index})">Edit</button>` : "";
+      container.innerHTML += `
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="story-card text-center p-4 h-100 position-relative">
+            ${editBtn}
+            <img src="${s.photo}" alt="User">
+            <h4>${s.name}</h4>
+            <p>"${s.story}"</p>
+          </div>
+        </div>`;
+    });
+  }
+  function editStory(index) {
+    let story = stories[index];
+    document.getElementById("name").value = story.name;
+    document.getElementById("photo").value = story.photo;
+    document.getElementById("story").value = story.story;
+    stories.splice(index, 1);
+    localStorage.setItem("stories", JSON.stringify(stories));
+    renderStories();
+    window.scrollTo({ top: document.querySelector('.form-section').offsetTop, behavior: 'smooth' });
+  }
+  renderStories();
+
+  // ✅ Form validation + save
+  document.getElementById("storyForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    let nameInput = document.getElementById("name");
+    let photoInput = document.getElementById("photo");
+    let storyInput = document.getElementById("story");
+    let nameError = document.getElementById("nameError");
+    let photoError = document.getElementById("photoError");
+    let storyError = document.getElementById("storyError");
+    let valid = true;
+
+    if (!/^[A-Za-z\s]{3,30}$/.test(nameInput.value.trim())) {
+      nameError.textContent = "Name must be 3-30 characters (letters and spaces only).";
+      nameError.classList.remove("d-none"); valid = false;
+    } else { nameError.classList.add("d-none"); }
+
+    if (photoInput.value.trim() && !/^https?:\/\/.+/.test(photoInput.value.trim())) {
+      photoError.textContent = "Please enter a valid URL starting with http/https.";
+      photoError.classList.remove("d-none"); valid = false;
+    } else { photoError.classList.add("d-none"); }
+
+    if (storyInput.value.trim().length < 20 || storyInput.value.trim().length > 300) {
+      storyError.textContent = "Story must be between 20 and 300 characters.";
+      storyError.classList.remove("d-none"); valid = false;
+    } else { storyError.classList.add("d-none"); }
+
+    if (valid) {
+      stories.push({ name: nameInput.value.trim(), photo: photoInput.value.trim() || "https://i.pravatar.cc/150", story: storyInput.value.trim(), isMine: true });
+      localStorage.setItem("stories", JSON.stringify(stories));
+      renderStories();
+      this.reset();
+      alert("Your story has been submitted successfully!");
+    }
+  });
+  </script>
+</body>
+</html>

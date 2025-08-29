@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login Form</title>
+  <link rel="stylesheet" href="home.html">
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link rel="icon" type="img/png" href="favicon.png">
+
+  <style>
+    :root {
+      --main-bg-gradient: linear-gradient(270deg, #4b0082, #6a0dad, #1c1c1c, #4b0082);
+      --footer-bg: #000000;
+      --footer-glow: rgba(106, 13, 173, 0.6);
+      --primary-purple: #6a0dad;
+      --primary-purple-light: #b084f9;
+      --text-light: #d1b3ff;
+      --text-white: #fff;
+      --input-bg: #1a1a1a;
+      --input-border: #6a0dad;
+      --footer-bg-gradient: linear-gradient(135deg, #1a0033, #4b0082);
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--main-bg-gradient);
+      background-size: 400% 400%;
+      animation: gradientBG 12s ease-in-out infinite;
+      scroll-behavior: smooth;
+      color: var(--text-white);
+      margin-top: 60px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.18;
+      z-index: 0;
+      animation: floatShape 8s ease-in-out infinite alternate;
+    }
+
+    .shape1 {
+      width: 180px;
+      height: 180px;
+      background: #6a0dad;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+
+    .shape2 {
+      width: 120px;
+      height: 120px;
+      background: #b084f9;
+      bottom: 12%;
+      right: 8%;
+      animation-delay: 2s;
+    }
+
+    .shape3 {
+      width: 90px;
+      height: 90px;
+      background: #4b0082;
+      top: 60%;
+      left: 80%;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatShape {
+      0% {
+        transform: translateY(0) scale(1);
+      }
+
+      100% {
+        transform: translateY(-30px) scale(1.08);
+      }
+    }
+
+    .main-content {
+      flex: 1 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Modern & Matching Navbar */
+    .navbar {
+      background: var(--footer-bg-gradient);
+      /* Same gradient as footer */
+      box-shadow: 0 4px 15px rgba(106, 13, 173, 0.7);
+      transition: background 0.5s ease;
+      padding: 1rem 2rem;
+      z-index: 1000;
+    }
+
+    .navbar:hover {
+      background: linear-gradient(135deg, #2a004d, #4b0082);
+      box-shadow: 0 4px 15px rgba(90, 12, 152, 0.7);
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-white) !important;
+      letter-spacing: 1px;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: var(--primary-purple-light) !important;
+    }
+
+    .navbar-nav .nav-link {
+      margin: 0 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-light) !important;
+      letter-spacing: 0.5px;
+      transition: color 0.3s ease, transform 0.3s ease;
+      position: relative;
+    }
+
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-purple-light) !important;
+      transform: translateY(-2px);
+    }
+
+    .navbar-nav .nav-link::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+      margin-top: 3px;
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .navbar-nav .nav-link.active {
+      color: #fff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-purple-light);
+    }
+
+   /* Navbar Toggler - simple white icon, no hover/click effects */
+.navbar-toggler {
+  background: none;       /* Transparent background */
+  border: none;           /* No border */
+  padding: 0.35rem 0.55rem;
+  box-shadow: none;
+  outline: none;          /* Remove focus outline */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:not(.collapsed) {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;  /* Remove white border on click */
+}
+
+/* Hamburger icon */
+.navbar-toggler .fa-bars {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+/* Hide default Bootstrap toggler icon */
+.navbar-toggler-icon {
+  display: none;
+}
+
+
+    @media (max-width: 768px) {
+      .navbar-nav .nav-link {
+        margin: 10px 0;
+        text-align: center;
+      }
+
+      .navbar {
+        padding: 0.8rem 1rem;
+      }
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.97);
+      padding: 44px 32px 32px 32px;
+      border-radius: 18px;
+      box-shadow: 0 0 32px 0 rgba(106, 13, 173, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 440px;
+      animation: fadeSlideIn 1.1s cubic-bezier(.77, .01, .29, 1.01);
+      position: relative;
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+   /* Login Form */
+    .form-container {
+      background: rgba(0, 0, 0, 0.75);
+      padding: 44px 32px 32px 32px;
+      border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(106, 13, 173, 0.4);
+      width: 100%;
+      max-width: 440px;
+      animation: fadeSlideIn 1.1s cubic-bezier(.77, .01, .29, 1.01);
+      position: relative;
+      border: 1px solid rgba(106, 13, 173, 0.5);
+      backdrop-filter: blur(10px);
+    }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(40px) scale(0.98);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+.form-container {
+  background: linear-gradient(135deg, #000000 85%, #6a0dad 15%); /* mostly black, slight purple */
+  padding: 44px 32px 32px 32px;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(106, 13, 173, 0.4);
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  border: 1px solid rgba(106, 13, 173, 0.5);
+  backdrop-filter: blur(10px);
+}
+
+.form-title {
+  color: #b084f9; /* Light purple */
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+
+/* Input text white */
+.form-control {
+  color: #fff;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1.5px solid rgba(106, 13, 173, 0.5);
+}
+
+.form-control::placeholder {
+  color: #ddd;
+}
+
+
+  
+    .form-tagline,
+    .form-benefit {
+      color: #fff;
+      text-align: center;
+    }
+
+    /* Input text */
+.form-control {
+  color: #fff; /* Text color white */
+  background: rgba(255, 255, 255, 0.1); /* semi-transparent background */
+  border: 1.5px solid rgba(106, 13, 173, 0.5);
+}
+
+/* Placeholder text */
+.form-control::placeholder {
+  color: #fff; /* Placeholder text color white */
+  opacity: 0.8; /* Slightly lighter */
+}
+
+
+    .form-tagline {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .form-benefit {
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .input-group-text {
+      background: rgba(106, 13, 173, 0.3);
+      color: #fff;
+      border: none;
+      font-size: 1.1rem;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      border: 1.5px solid rgba(106, 13, 173, 0.5);
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+      box-shadow: none;
+    }
+
+    .form-control:focus {
+      border-color: #b084f9;
+      box-shadow: 0 0 10px #b084f9;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    .show-password {
+      cursor: pointer;
+      color: #b084f9;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      margin-left: -36px;
+      z-index: 2;
+      position: relative;
+    }
+
+    .btn-custom {
+      background: linear-gradient(90deg, #6a0dad, #b084f9);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 0;
+      font-size: 1.1rem;
+      margin-top: 6px;
+      box-shadow: 0 4px 16px rgba(106, 13, 173, 0.4);
+      transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-custom:hover,
+    .btn-custom:focus {
+      background: linear-gradient(90deg, #b084f9, #6a0dad);
+      transform: scale(1.04);
+      box-shadow: 0 6px 20px rgba(106, 13, 173, 0.6);
+      color: #fff;
+    }
+/* Add spacing between form fields */
+.form-container .input-group {
+  margin-bottom: 18px; /* adjust value as needed */
+}
+
+    .btn-back {
+      display: inline-block;
+      min-width: 120px;
+      max-width: 180px;
+      width: auto;
+      padding-left: 28px;
+      padding-right: 28px;
+      margin-top: 8px;
+      background: none !important;
+      color: #b084f9 !important;
+      border: 2px solid #b084f9;
+      box-shadow: none;
+      font-weight: 600;
+    }
+    .signup-prompt {
+      text-align: center;
+      margin-top: 18px;
+      color: #4b0082;
+      font-size: 1rem;
+    }
+
+    .signup-prompt a {
+      color: #6a0dad;
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 4px;
+    }
+
+    .signup-prompt a:hover {
+      color: #4b0082;
+      text-decoration: underline;
+    }
+
+    .alert {
+      display: none;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      animation: alertIn 0.5s;
+    }
+
+    .alert.show {
+      display: block;
+      animation: alertIn 0.5s;
+    }
+
+    @keyframes alertIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .form-container {
+        padding: 24px 8px;
+        max-width: 98vw;
+      }
+    }
+
+    /* Footer base */
+    footer.footer {
+      background-color: #000;
+      box-shadow: 0 0 30px 10px rgba(106, 13, 173, 0.4);
+      border-top: 2px solid rgba(106, 13, 173, 0.5);
+      margin-top: 60px;
+      padding: 40px 0 20px;
+    }
+
+    .footer-link {
+      color: var(--text-light);
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin: 6px 15px;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-purple-light);
+      text-decoration: underline;
+    }
+
+    .footer .links-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .social-icon {
+      color: var(--text-light);
+      margin: 0 10px;
+      font-size: 1.5rem;
+    }
+
+    .social-icon:hover {
+      color: var(--primary-purple-light);
+      transform: scale(1.2);
+    }
+
+    .btn-back {
+      display: inline-block;
+      min-width: 120px;
+      max-width: 180px;
+      width: auto;
+      padding-left: 28px;
+      padding-right: 28px;
+      margin-top: 8px;
+      background: none !important;
+      color: #6a0dad !important;
+      border: 2px solid #6a0dad;
+      box-shadow: none;
+      font-weight: 600;
+    }
+
+    .btn-back:hover,
+    .btn-back:focus {
+      background: #f3eaff !important;
+      color: #4b0082 !important;
+      border-color: #4b0082;
+    }
+
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+      background: linear-gradient(135deg, var(--primary-purple), #2a2a2a);
+      border: 2px solid var(--primary-purple-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+      padding: 8px 0;
+      min-width: 180px;
+    }
+
+    .dropdown-item {
+      color: var(--text-light) !important;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg,
+          var(--primary-purple-light),
+          var(--primary-purple));
+      color: var(--text-white) !important;
+      transform: translateX(2px);
+      box-shadow: 0 0px 2px rgba(176, 132, 249, 0.3);
+    }
+
+    .log {
+      color: white;
+      text-decoration: none;
+    }
+
+    .log:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="index.html">SkillSwap</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span><i class="fa fa-bars text-white"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="skills.html">Choose a Skill</a></li>
+          <li class="nav-item"><a class="nav-link" href="find.html">Skill-Matcher</a></li>
+          <li class="nav-item"><a class="nav-link" href="community.html">Community</a></li>
+                              <li class="nav-item"><a class="nav-link" href="story.html">Sucess-Stories</a></li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Learning <i
+                class="fas fa-chevron-down ms-1"></i></a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="type.html">TypeSprint</a></li>
+              <li><a class="dropdown-item" href="quiz.html">Quiz</a></li>
+              <li><a class="dropdown-item" href="calendar.html">Skill Calendar</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link active" href="login.html">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="main-content">
+    <div class="form-container">
+      <h2 class="form-title"><i class="fas fa-user-shield me-2"></i>Welcome !</h2>
+      <div class="form-tagline">Log in to SkillSwap</div>
+      <div class="form-benefit">Connect, learn, and grow with our vibrant community.</div>
+
+      <!-- Alert message -->
+      <div id="alertBox" class="alert" role="alert" aria-live="assertive"></div>
+
+      <form id="loginForm" novalidate>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-user"></i></span>
+<input type="text" class="form-control" id="name" placeholder="Your full name" 
+       required pattern="^[A-Za-z\s]+$" />
+        </div>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+          <input type="email" class="form-control" id="email" placeholder="abc@example.com" required />
+        </div>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-lock"></i></span>
+          <input type="password" class="form-control" id="password" placeholder="At least 6 characters" required
+            minlength="6" />
+          <button type="button" class="show-password" tabindex="-1"><i class="fas fa-eye"></i></button>
+        </div>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fas fa-phone"></i></span>
+          <input type="tel" class="form-control" id="contact" placeholder="03XX-XXXXXXX" required
+            pattern="^03[0-9]{9}$" />
+        </div>
+        <button type="submit" class="btn btn-custom w-100">Log In</button>
+      </form>
+
+      <div class="text-center mt-3">
+        <a href="index.html" class="btn btn-custom btn-back"><i class="fas fa-arrow-left me-1"></i> Back</a>
+      </div>
+    </div>
+  </div>
+
+  
+         <!-- Footer -->
+<footer class="footer text-white">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About / Tagline -->
+      <div class="col-md-4 mb-4">
+        <h5 class="fw-bold">SkillSwap</h5>
+        <p class="text-light">Connect, Learn, Grow – Empowering learners and mentors worldwide.</p>
+        <div>
+          <a href="https://www.facebook.com/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://pk.linkedin.com/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4">
+        <h6 class="fw-bold text-light mb-3">Quick Links</h6>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="skills.html" class="footer-link">Choose a Skill</a></li>
+          <li><a href="find.html" class="footer-link">Skill-Matcher</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="story.html" class="footer-link">Success Stories</a></li>
+          <li><a href="login.html" class="footer-link">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Section -->
+      <div class="col-md-4 mb-4">
+        <h6 class="fw-bold text-light mb-3">Learning</h6>
+        <ul class="list-unstyled">
+          <li><a href="type.html" class="footer-link">TypeSprint</a></li>
+          <li><a href="quiz.html" class="footer-link">Quiz</a></li>
+          <li><a href="calendar.html" class="footer-link">Skill Calendar</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary" />
+
+    <div class="text-center small">
+      &copy; 2025 SkillSwap. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Highlight active nav link
+    const currentPath = window.location.pathname.split("/").pop();
+    document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
+      if (link.getAttribute("href") === currentPath) link.classList.add("active");
+    });
+
+    const alertBox = document.getElementById('alertBox');
+    function showAlert(message, type = 'danger') {
+      alertBox.className = `alert alert-${type} fade show`;
+      alertBox.textContent = message;
+      alertBox.style.display = 'block';
+      setTimeout(() => { alertBox.style.display = 'none'; }, 4000);
+    }
+
+    // Show/hide password toggle
+    document.querySelector('.show-password').addEventListener('click', function () {
+      const pwd = document.getElementById('password');
+      const icon = this.querySelector('i');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+      icon.classList.toggle('fa-eye');
+      icon.classList.toggle('fa-eye-slash');
+    });
+
+    // Form validation
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const contact = document.getElementById('contact').value.trim();
+
+      if (!name || !email || !password || !contact) {
+        showAlert("Please fill in all fields.");
+        return;
+      }
+const nameRegex = /^[A-Za-z\s]+$/;
+if (!nameRegex.test(name)) {
+  showAlert("Name must contain only letters and spaces.");
+  return;
+}
+
+      const emailRegex = /^[\w.-]+@[\w.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(email)) {
+        showAlert("Please enter a valid email address.");
+        return;
+      }
+
+      const contactRegex = /^03[0-9]{9}$/;
+      if (!contactRegex.test(contact)) {
+        showAlert("Contact must start with '03' and be 11 digits.");
+        return;
+      }
+
+      if (password.length < 6) {
+        showAlert("Password must be at least 6 characters.");
+        return;
+      }
+
+      // Success
+      showAlert("Login successful!", "success");
+      setTimeout(() => { window.location.href = "index.html"; }, 1500);
+    });
+  </script>
+
+  <!-- Floating shapes -->
+  <div class="floating-shape shape1"></div>
+  <div class="floating-shape shape2"></div>
+  <div class="floating-shape shape3"></div>
+
+</body>
+
+</html>

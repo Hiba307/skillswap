@@ -1,0 +1,1685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SkillSwap Match Finder</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+
+  <!-- Animate.css for additional animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <link rel="icon" type="img/png" href="favicon.png">
+
+  <style>
+    :root {
+      --main-bg-gradient: linear-gradient(135deg, #4b0082, #000000);
+      --footer-bg: #000000;
+      --footer-glow: rgba(106, 13, 173, 0.6);
+      --primary-purple: #6a0dad;
+      --primary-purple-light: #b084f9;
+      --text-light: #d1b3ff;
+      --text-white: #fff;
+      --input-bg: #1a1a1a;
+      --input-border: #6a0dad;
+      --footer-bg-gradient: linear-gradient(135deg, #1a0033, #4b0082);
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+    }
+
+    body {
+      background: linear-gradient(135deg, var(--primary-purple), #000);
+      color: var(--text-white);
+      padding-top: 80px;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Animated background particles */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(176, 132, 249, 0.3);
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-1000px) translateX(500px) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    .navbar {
+      background: var(--footer-bg-gradient);
+      box-shadow: 0 4px 15px rgba(106, 13, 173, 0.7);
+      transition: all 0.5s ease;
+      padding: 1rem 2rem;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+
+    .navbar:hover {
+      background: linear-gradient(135deg, #2a004d, #4b0082);
+      box-shadow: 0 4px 20px rgba(90, 12, 152, 0.9);
+    }
+
+    /* Brand Styling */
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--text-white) !important;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      text-shadow: 0 0 10px rgba(176, 132, 249, 0.7);
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+      color: var(--primary-purple-light) !important;
+      text-shadow: 0 0 15px rgba(176, 132, 249, 0.9);
+    }
+
+    /* Nav Links */
+    .navbar-nav .nav-link {
+      margin: 0 18px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text-light) !important;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    /* Hover with animation */
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-purple-light) !important;
+      transform: translateY(-2px);
+      text-shadow: 0 0 8px rgba(176, 132, 249, 0.6);
+    }
+
+    /* Underline effect */
+    .navbar-nav .nav-link::after {
+      content: "";
+      display: block;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+      transform-origin: left;
+      margin-top: 3px;
+      box-shadow: 0 0 8px var(--primary-purple-light);
+    }
+
+    .navbar-nav .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* Active Link Styling */
+    .navbar-nav .nav-link.active {
+      color: #fff !important;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-purple-light);
+      text-shadow: 0 0 10px rgba(176, 132, 249, 0.8);
+    }
+.navbar-toggler {
+  background: none;       /* Transparent background */
+  border: none;           /* No border */
+  padding: 0.35rem 0.55rem;
+  box-shadow: none;
+  outline: none;          /* Remove focus outline */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:not(.collapsed) {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;  /* Remove white border on click */
+}
+
+/* Hamburger icon */
+.navbar-toggler .fa-bars {
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+/* Optional: remove default Bootstrap toggler icon */
+.navbar-toggler-icon {
+  display: none; /* hide default Bootstrap icon if using FontAwesome */
+}
+    /* Form container with glassmorphism effect */
+    .form-container {
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(10px);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 0 25px rgba(106, 13, 173, 0.7);
+      border: 1px solid rgba(176, 132, 249, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .form-container:hover {
+      box-shadow: 0 0 35px rgba(106, 13, 173, 0.9);
+      transform: translateY(-5px);
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--text-light);
+      margin-bottom: 8px;
+      text-shadow: 0 0 5px rgba(176, 132, 249, 0.5);
+    }
+
+    .form-control {
+      background: rgba(26, 26, 26, 0.7);
+      border: 1.5px solid var(--input-border);
+      color: var(--text-white);
+      border-radius: 10px;
+      padding: 12px 15px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background: rgba(26, 26, 26, 0.9);
+      border-color: var(--primary-purple-light);
+      box-shadow: 0 0 15px rgba(176, 132, 249, 0.5);
+      color: var(--text-white);
+    }
+
+    .form-control::placeholder {
+      color: rgba(209, 179, 255, 0.6);
+    }
+
+    /* Submit button with glow effect */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary-purple), #8a2be2);
+      border: none;
+      border-radius: 50px;
+      padding: 12px 0;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 15px rgba(106, 13, 173, 0.7);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #8a2be2, var(--primary-purple));
+      transform: translateY(-3px);
+      box-shadow: 0 0 25px rgba(106, 13, 173, 0.9);
+    }
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    /* Match list styling */
+    .match-list {
+      margin-top: 40px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      padding: 25px;
+      border-radius: 15px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid rgba(176, 132, 249, 0.2);
+      box-shadow: 0 0 20px rgba(106, 13, 173, 0.5);
+    }
+
+    .match-item {
+      border-bottom: 1px solid rgba(153, 153, 153, 0.3);
+      padding: 20px 0;
+      transition: all 0.3s ease;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .match-item:hover {
+      background: rgba(106, 13, 173, 0.2);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(106, 13, 173, 0.3);
+    }
+
+    .btn-meet,
+    .btn-zoom {
+      margin-top: 10px;
+      margin-right: 10px;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-meet:hover,
+    .btn-zoom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Footer styling */
+    footer.footer {
+      background-color: #000;
+      box-shadow: 0 0 30px 10px rgba(106, 13, 173, 0.4);
+      border-top: 2px solid rgba(106, 13, 173, 0.5);
+      margin-top: 60px;
+      padding: 40px 0 20px;
+      position: relative;
+    }
+
+    .footer-link {
+      color: var(--text-light);
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      margin: 6px 15px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .footer-link:hover {
+      color: var(--primary-purple-light);
+      transform: translateY(-3px);
+      text-shadow: 0 0 8px rgba(176, 132, 249, 0.6);
+    }
+
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--primary-purple-light);
+      transition: width 0.3s ease;
+    }
+
+    .footer-link:hover::after {
+      width: 100%;
+    }
+
+    .footer .links-center {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .social-icon {
+      color: var(--text-light);
+      margin: 0 10px;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    .social-icon:hover {
+      color: var(--primary-purple-light);
+      transform: scale(1.3) translateY(-5px);
+      text-shadow: 0 0 10px rgba(176, 132, 249, 0.7);
+    }
+
+    /* Animations for match items */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .match-item {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    /* Pulse animation for waiting matches */
+    @keyframes pulse {
+      0% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.7;
+      }
+    }
+
+    .waiting-match {
+      animation: pulse 2s infinite;
+    }
+
+    /* Success animation for matched items */
+    @keyframes matchSuccess {
+      0% {
+        background: rgba(106, 13, 173, 0.2);
+      }
+
+      50% {
+        background: rgba(106, 13, 173, 0.5);
+      }
+
+      100% {
+        background: rgba(106, 13, 173, 0.2);
+      }
+    }
+
+    .matched-item {
+      animation: matchSuccess 1s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .navbar-nav .nav-link {
+        margin: 10px 0;
+        text-align: center;
+      }
+
+      .navbar {
+        padding: 0.8rem 1rem;
+      }
+
+      .form-container,
+      .match-list {
+        margin: 20px;
+        width: auto;
+      }
+    }
+
+    /* Dropdown Menu Styling */
+    .dropdown-menu {
+      background: linear-gradient(135deg, var(--primary-purple), #2a2a2a);
+      border: 2px solid var(--primary-purple-light);
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(106, 13, 173, 0.6);
+      padding: 8px 0;
+      min-width: 180px;
+      backdrop-filter: blur(10px);
+    }
+
+    .dropdown-item {
+      color: var(--text-light) !important;
+      padding: 10px 20px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      border-radius: 8px;
+      margin: 2px 8px;
+    }
+
+    .dropdown-item:hover {
+      background: linear-gradient(135deg,
+          var(--primary-purple-light),
+          var(--primary-purple));
+      color: var(--text-white) !important;
+      transform: translateX(5px);
+      box-shadow: 0 0px 10px rgba(176, 132, 249, 0.3);
+    }
+
+    /* Heading glow effect */
+    .glow-text {
+      text-shadow: 0 0 10px rgba(176, 132, 249, 0.7);
+      animation: textGlow 3s infinite alternate;
+    }
+
+    @keyframes textGlow {
+      0% {
+        text-shadow: 0 0 10px rgba(176, 132, 249, 0.7);
+      }
+
+      100% {
+        text-shadow: 0 0 20px rgba(176, 132, 249, 0.9), 0 0 30px rgba(176, 132, 249, 0.6);
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-purple);
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-purple-light);
+    }
+
+    /* NEW ANIMATIONS ADDED */
+    /* Form submission animation */
+    .form-submitting {
+      animation: formPulse 1s infinite;
+    }
+
+    @keyframes formPulse {
+      0% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+
+    /* Success checkmark animation */
+    .checkmark {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: block;
+      stroke-width: 5;
+      stroke: #fff;
+      stroke-miterlimit: 10;
+      margin: 0 auto;
+      box-shadow: 0 0 15px var(--primary-purple-light);
+      animation: fill-checkmark .4s ease-in-out .4s forwards, scale-checkmark .3s ease-in-out .9s both;
+    }
+
+    .checkmark-circle {
+      stroke-dasharray: 166;
+      stroke-dashoffset: 166;
+      stroke-width: 5;
+      stroke-miterlimit: 10;
+      stroke: var(--primary-purple-light);
+      fill: none;
+      animation: stroke-checkmark 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+
+    .checkmark-check {
+      transform-origin: 50% 50%;
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: stroke-checkmark 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+
+    @keyframes stroke-checkmark {
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    @keyframes scale-checkmark {
+
+      0%,
+      100% {
+        transform: none;
+      }
+
+      50% {
+        transform: scale3d(1.1, 1.1, 1);
+      }
+    }
+
+    @keyframes fill-checkmark {
+      100% {
+        background: var(--primary-purple-light);
+      }
+    }
+
+    /* Loading dots animation */
+    .loading-dots {
+      display: inline-block;
+      position: relative;
+      width: 80px;
+      height: 20px;
+    }
+
+    .loading-dots div {
+      position: absolute;
+      top: 0;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: var(--primary-purple-light);
+      animation-timing-function: cubic-bezier(0, 1, 1, 0);
+    }
+
+    .loading-dots div:nth-child(1) {
+      left: 8px;
+      animation: loading-dots1 0.6s infinite;
+    }
+
+    .loading-dots div:nth-child(2) {
+      left: 8px;
+      animation: loading-dots2 0.6s infinite;
+    }
+
+    .loading-dots div:nth-child(3) {
+      left: 32px;
+      animation: loading-dots2 0.6s infinite;
+    }
+
+    .loading-dots div:nth-child(4) {
+      left: 56px;
+      animation: loading-dots3 0.6s infinite;
+    }
+
+    @keyframes loading-dots1 {
+      0% {
+        transform: scale(0);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @keyframes loading-dots3 {
+      0% {
+        transform: scale(1);
+      }
+
+      100% {
+        transform: scale(0);
+      }
+    }
+
+    @keyframes loading-dots2 {
+      0% {
+        transform: translate(0, 0);
+      }
+
+      100% {
+        transform: translate(24px, 0);
+      }
+    }
+
+    /* Floating notification */
+    .notification {
+      position: fixed;
+      top: 100px;
+      right: 20px;
+      padding: 15px 20px;
+      background: var(--footer-bg-gradient);
+      color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      z-index: 10000;
+      transform: translateX(100%);
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    /* Data saving animation */
+    @keyframes dataSave {
+      0% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-5px);
+      }
+
+      100% {
+        transform: translateY(0);
+      }
+    }
+
+    .data-saving {
+      animation: dataSave 0.5s ease;
+    }
+
+    /* NEW FEATURES STYLES */
+    /* Filter controls */
+    .filter-controls {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-controls input,
+    .filter-controls select {
+      background: rgba(26, 26, 26, 0.7);
+      border: 1.5px solid var(--input-border);
+      color: var(--text-white);
+      border-radius: 8px;
+      padding: 8px 12px;
+      max-width: 200px;
+    }
+
+    /* Skill tags */
+    .skill-tag {
+      display: inline-block;
+      background: rgba(106, 13, 173, 0.3);
+      padding: 4px 10px;
+      border-radius: 20px;
+      margin: 5px;
+      font-size: 0.9rem;
+      border: 1px solid var(--primary-purple-light);
+    }
+
+    /* User profile section */
+    .user-profile {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: var(--primary-purple);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-right: 15px;
+    }
+
+    /* Rating stars */
+    .rating {
+      color: var(--warning);
+      margin: 5px 0;
+    }
+
+    /* Badges */
+    .badge {
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      margin-left: 8px;
+    }
+
+    .badge-success {
+      background: var(--success);
+    }
+
+    .badge-warning {
+      background: var(--warning);
+      color: #000;
+    }
+
+    .badge-info {
+      background: var(--primary-purple);
+    }
+
+    /* Stats section */
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .stat-item {
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      min-width: 120px;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-purple-light);
+    }
+
+    /* Toggle view buttons */
+    .view-toggle {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .view-btn {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--primary-purple);
+      color: var(--text-light);
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .view-btn:first-child {
+      border-radius: 8px 0 0 8px;
+    }
+
+    .view-btn:last-child {
+      border-radius: 0 8px 8px 0;
+    }
+
+    .view-btn.active {
+      background: var(--primary-purple);
+      color: white;
+    }
+
+    /* Grid view for matches */
+    .matches-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .match-card {
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(176, 132, 249, 0.2);
+    }
+
+    .match-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 15px rgba(106, 13, 173, 0.3);
+    }
+
+    /* Progress bar */
+    .progress {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-bar {
+      background: var(--primary-purple-light);
+      height: 100%;
+      border-radius: 4px;
+    }
+
+    /* Tooltip */
+    .tooltip {
+      position: relative;
+      display: inline-block;
+      border-bottom: 1px dotted var(--primary-purple-light);
+      cursor: help;
+    }
+
+    .tooltip .tooltiptext {
+      visibility: hidden;
+      width: 200px;
+      background: rgba(0, 0, 0, 0.8);
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .tooltip:hover .tooltiptext {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Animated background particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- Notification element -->
+  <div class="notification" id="notification"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold text-white" href="home.html">SkillSwap</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+        <span><i class="fa fa-bars text-white"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto align-items-center">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="skills.html">Choose a Skill</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="find.html">Find Matches</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="community.html">Community</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="story.html">Sucess stories</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Learning <i class="fas fa-chevron-down ms-1"></i>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="type.html">Typing</a></li>
+              <li><a class="dropdown-item" href="quiz.html">Quiz</a></li>
+              <li>
+                <a class="dropdown-item" href="calendar.html">Skill Calendar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="login.html">Login</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Stats Section -->
+  <div class="container stats-container animate__animated animate__fadeIn">
+    <div class="stat-item">
+      <div class="stat-number" id="totalUsers">0</div>
+      <div>Total Users</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="totalMatches">0</div>
+      <div>Successful Matches</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" id="activeNow">0</div>
+      <div>Active Now</div>
+    </div>
+  </div>
+
+  <!-- Form -->
+  <div class="form-container mt-5 animate__animated animate__fadeIn">
+    <h3 class="text-center mb-4 glow-text">SkillSwap - Find a Match</h3>
+    <form id="skillForm">
+      <div class="mb-3">
+        <label class="form-label">Your Name</label>
+        <input type="text" class="form-control" id="name" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <input type="email" class="form-control" id="email" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">I Can Teach <span class="tooltip">ℹ
+            <span class="tooltiptext">Enter a skill you're proficient in</span>
+          </span></label>
+        <input type="text" class="form-control" id="canTeach" required list="skillsList" />
+        <datalist id="skillsList">
+          <option value="Web Development">
+          <option value="Graphic Design">
+          <option value="Digital Marketing">
+          <option value="Photography">
+          <option value="Content Writing">
+          <option value="Data Analysis">
+          <option value="UI/UX Design">
+          <option value="Python Programming">
+          <option value="Social Media Management">
+          <option value="Video Editing">
+        </datalist>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">I Want to Learn <span class="tooltip">ℹ
+            <span class="tooltiptext">Enter a skill you want to acquire</span>
+          </span></label>
+        <input type="text" class="form-control" id="wantToLearn" required list="skillsList" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Skill Level <span class="tooltip">ℹ
+            <span class="tooltiptext">How proficient are you in the skill you're teaching?</span>
+          </span></label>
+        <select class="form-control" id="skillLevel">
+          <option value="beginner">Beginner</option>
+          <option value="intermediate">Intermediate</option>
+          <option value="advanced">Advanced</option>
+          <option value="expert">Expert</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100" id="submitButton">
+        Find My Match
+      </button>
+    </form>
+  </div>
+
+  <!-- View Toggle -->
+  <div class="view-toggle mt-4">
+    <button class="view-btn active" id="listViewBtn">
+      <i class="fas fa-list"></i> List View
+    </button>
+    <button class="view-btn" id="gridViewBtn">
+      <i class="fas fa-th"></i> Grid View
+    </button>
+  </div>
+
+  <!-- Filter Controls -->
+  <div class="filter-controls animate__animated animate__fadeIn">
+    <input type="text" id="searchFilter" placeholder="Search skills or users..." class="form-control">
+    <select id="skillFilter" class="form-control">
+      <option value="">All Skills</option>
+      <option value="Web Development">Web Development</option>
+      <option value="Graphic Design">Graphic Design</option>
+      <option value="Digital Marketing">Digital Marketing</option>
+      <option value="Photography">Photography</option>
+      <option value="Content Writing">Content Writing</option>
+    </select>
+    <select id="levelFilter" class="form-control">
+      <option value="">Any Level</option>
+      <option value="beginner">Beginner</option>
+      <option value="intermediate">Intermediate</option>
+      <option value="advanced">Advanced</option>
+      <option value="expert">Expert</option>
+    </select>
+  </div>
+
+  <!-- Match Results -->
+  <div class="match-list animate__animated animate__fadeInUp" id="matches">
+    <h4 class="text-center glow-text">Matched Users</h4>
+    <div id="matchResults"></div>
+  </div>
+
+
+         <!-- Footer -->
+<footer class="footer text-white">
+  <div class="container">
+    <div class="row text-center text-md-start">
+      
+      <!-- About / Tagline -->
+      <div class="col-md-4 mb-4 text-center text-md-start">
+        <h5 class="fw-bold footer-heading">SkillSwap</h5>
+        <p class="text-light">Connect, Learn, Grow – Empowering learners and mentors worldwide.</p>
+        <div>
+          <a href="https://www.facebook.com/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://x.com/" class="social-icon"><i class="fab fa-twitter"></i></a>
+          <a href="https://www.instagram.com/" class="social-icon"><i class="fab fa-instagram"></i></a>
+          <a href="https://pk.linkedin.com/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="footer-link">Home</a></li>
+          <li><a href="skills.html" class="footer-link">Choose a Skill</a></li>
+          <li><a href="find.html" class="footer-link">Skill-Matcher</a></li>
+          <li><a href="community.html" class="footer-link">Community</a></li>
+          <li><a href="story.html" class="footer-link">Success Stories</a></li>
+          <li><a href="login.html" class="footer-link">Login</a></li>
+        </ul>
+      </div>
+
+      <!-- Learning Section -->
+      <div class="col-md-4 mb-4 text-center">
+        <h5 class="fw-bold footer-heading">Learning</h5>
+        <ul class="list-unstyled">
+          <li><a href="type.html" class="footer-link">TypeSprint</a></li>
+          <li><a href="quiz.html" class="footer-link">Quiz</a></li>
+          <li><a href="calendar.html" class="footer-link">Skill Calendar</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <hr class="border-secondary" />
+
+    <div class="text-center small">
+      &copy; 2025 SkillSwap. All rights reserved.
+    </div>
+  </div>
+</footer>
+  <!-- Matching Logic -->
+  <script>
+    // Create animated background particles
+    function createParticles() {
+      const particlesContainer = document.getElementById('particles');
+      const numberOfParticles = 30;
+
+      for (let i = 0; i < numberOfParticles; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+
+        // Random size, position, and animation delay
+        const size = Math.random() * 20 + 5;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const animationDelay = Math.random() * 15;
+
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        particle.style.left = `${posX}vw`;
+        particle.style.top = `${posY}vh`;
+        particle.style.animationDelay = `${animationDelay}s`;
+
+        particlesContainer.appendChild(particle);
+      }
+    }
+
+    // Show notification function
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('notification');
+      notification.textContent = message;
+      notification.className = `notification show ${type}`;
+
+      setTimeout(() => {
+        notification.classList.remove('show');
+      }, 3000);
+    }
+
+    // Get users from localStorage
+    function getUsersFromStorage() {
+      const usersJSON = localStorage.getItem('skillswap_users');
+      return usersJSON ? JSON.parse(usersJSON) : [];
+    }
+
+    // Save users to localStorage
+    function saveUsersToStorage(users) {
+      localStorage.setItem('skillswap_users', JSON.stringify(users));
+      // Animate the save action
+      document.getElementById('submitButton').classList.add('data-saving');
+      setTimeout(() => {
+        document.getElementById('submitButton').classList.remove('data-saving');
+      }, 500);
+    }
+
+    // Simulate API call with animation
+    function simulateAPICall() {
+      return new Promise((resolve) => {
+        // Show loading state
+        const submitButton = document.getElementById('submitButton');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<div class="loading-dots"><div></div><div></div><div></div><div></div></div>';
+        submitButton.classList.add('form-submitting');
+
+        setTimeout(() => {
+          submitButton.innerHTML = originalText;
+          submitButton.classList.remove('form-submitting');
+          resolve();
+        }, 1500);
+      });
+    }
+
+    // Show success animation
+    function showSuccessAnimation() {
+      const formContainer = document.querySelector('.form-container');
+      const successOverlay = document.createElement('div');
+      successOverlay.style.position = 'absolute';
+      successOverlay.style.top = '0';
+      successOverlay.style.left = '0';
+      successOverlay.style.width = '100%';
+      successOverlay.style.height = '100%';
+      successOverlay.style.background = 'rgba(0,0,0,0.7)';
+      successOverlay.style.borderRadius = '20px';
+      successOverlay.style.display = 'flex';
+      successOverlay.style.alignItems = 'center';
+      successOverlay.style.justifyContent = 'center';
+      successOverlay.style.zIndex = '10';
+
+      successOverlay.innerHTML = `
+          <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+            <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+            <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+          </svg>
+        `;
+
+      formContainer.style.position = 'relative';
+      formContainer.appendChild(successOverlay);
+
+      setTimeout(() => {
+        formContainer.removeChild(successOverlay);
+      }, 2000);
+    }
+
+    // Initialize with users from localStorage
+    let users = getUsersFromStorage();
+    let currentView = 'list'; // 'list' or 'grid'
+
+    // Update stats
+    function updateStats() {
+      const totalUsers = users.length;
+      let totalMatches = 0;
+
+      // Count matches
+      for (let i = 0; i < users.length; i++) {
+        for (let j = i + 1; j < users.length; j++) {
+          if (users[i].canTeach === users[j].wantToLearn &&
+            users[i].wantToLearn === users[j].canTeach) {
+            totalMatches++;
+          }
+        }
+      }
+
+      document.getElementById('totalUsers').textContent = totalUsers;
+      document.getElementById('totalMatches').textContent = totalMatches;
+      document.getElementById('activeNow').textContent = Math.floor(Math.random() * 20) + 5; // Random active users
+    }
+
+    // Filter matches based on search and filters
+    function filterMatches() {
+      const searchTerm = document.getElementById('searchFilter').value.toLowerCase();
+      const skillFilter = document.getElementById('skillFilter').value;
+      const levelFilter = document.getElementById('levelFilter').value;
+
+      const matchContainer = document.getElementById('matchResults');
+      const matchItems = matchContainer.querySelectorAll('.match-item, .match-card');
+
+      matchItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const hasSkill = skillFilter ? text.includes(skillFilter.toLowerCase()) : true;
+        const hasLevel = levelFilter ? text.includes(levelFilter) : true;
+        const hasSearchTerm = searchTerm ? text.includes(searchTerm) : true;
+
+        if (hasSkill && hasLevel && hasSearchTerm) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+
+    // Toggle between list and grid view
+    function toggleView(viewType) {
+      currentView = viewType;
+      const matchContainer = document.getElementById('matchResults');
+      const listViewBtn = document.getElementById('listViewBtn');
+      const gridViewBtn = document.getElementById('gridViewBtn');
+
+      if (viewType === 'grid') {
+        matchContainer.classList.add('matches-grid');
+        matchContainer.classList.remove('list-view');
+        listViewBtn.classList.remove('active');
+        gridViewBtn.classList.add('active');
+      } else {
+        matchContainer.classList.remove('matches-grid');
+        matchContainer.classList.add('list-view');
+        gridViewBtn.classList.remove('active');
+        listViewBtn.classList.add('active');
+      }
+
+      // Re-render matches with current view
+      loadExistingMatches();
+    }
+
+    document
+      .getElementById("skillForm")
+      .addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const canTeach = document
+          .getElementById("canTeach")
+          .value.trim()
+          .toLowerCase();
+        const wantToLearn = document
+          .getElementById("wantToLearn")
+          .value.trim()
+          .toLowerCase();
+        const skillLevel = document.getElementById("skillLevel").value;
+
+        // Validate inputs
+        if (!name || !email || !canTeach || !wantToLearn) {
+          showNotification('Please fill in all fields', 'error');
+          return;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          showNotification('Please enter a valid email address', 'error');
+          return;
+        }
+
+        // Simulate API call with animations
+        await simulateAPICall();
+
+        const newUser = {
+          name,
+          email,
+          canTeach,
+          wantToLearn,
+          skillLevel,
+          joinDate: new Date().toLocaleDateString(),
+          id: Date.now() // Unique ID for each user
+        };
+
+        let matchFound = false;
+        const matchContainer = document.getElementById("matchResults");
+
+        // Check if user already exists with this email
+        const existingUserIndex = users.findIndex(user => user.email === email);
+        if (existingUserIndex !== -1) {
+          // Update existing user
+          users[existingUserIndex] = newUser;
+          showNotification('Profile updated successfully!');
+        } else {
+          // Add new user
+          users.push(newUser);
+          showNotification('Profile saved successfully!');
+        }
+
+        // Save to localStorage
+        saveUsersToStorage(users);
+        updateStats();
+
+        // Clear previous results
+        matchContainer.innerHTML = '';
+
+        // Find matches
+        users.forEach((user, index) => {
+          // Skip the current user
+          if (user.email === email) return;
+
+          if (
+            user.canTeach === newUser.wantToLearn &&
+            user.wantToLearn === newUser.canTeach
+          ) {
+            matchFound = true;
+
+            const meetLink = "https://meet.google.com/";
+            const zoomLink = "https://zoom.us/";
+
+            let matchHtml = '';
+
+            if (currentView === 'list') {
+              matchHtml = `
+                <div class="match-item matched-item">
+                  <div class="user-profile">
+                    <div class="user-avatar">${user.name.charAt(0)}</div>
+                    <div>
+                      <h5>${user.name} <span class="badge badge-${user.skillLevel === 'expert' ? 'success' : user.skillLevel === 'beginner' ? 'warning' : 'info'}">${user.skillLevel}</span></h5>
+                      <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p><strong>${newUser.name}</strong> (<a href="mailto:${newUser.email}" class="text-info">${newUser.email}</a>) 
+                  <span class="text-warning">↔</span> 
+                  <strong>${user.name}</strong> (<a href="mailto:${user.email}" class="text-info">${user.email}</a>)</p>
+                  <p>Skills: <span class="skill-tag">${newUser.canTeach}</span> ⇄ <span class="skill-tag">${newUser.wantToLearn}</span></p>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 75%"></div>
+                  </div>
+                  <p class="small">Match strength: 75%</p>
+                  <a href="${meetLink}" target="_blank" class="btn btn-outline-light btn-sm btn-meet"><i class="fab fa-google"></i> Google Meet</a>
+                  <a href="${zoomLink}" target="_blank" class="btn btn-outline-light btn-sm btn-zoom"><i class="fab fa-zoom"></i> Zoom</a>
+                </div>`;
+            } else {
+              // Grid view
+              matchHtml = `
+                <div class="match-card matched-item">
+                  <div class="user-profile">
+                    <div class="user-avatar">${user.name.charAt(0)}</div>
+                    <div>
+                      <h5>${user.name} <span class="badge badge-${user.skillLevel === 'expert' ? 'success' : user.skillLevel === 'beginner' ? 'warning' : 'info'}">${user.skillLevel}</span></h5>
+                      <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p><strong>Skills exchange:</strong></p>
+                  <p><span class="skill-tag">${newUser.canTeach}</span> ⇄ <span class="skill-tag">${newUser.wantToLearn}</span></p>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 75%"></div>
+                  </div>
+                  <p class="small">Match strength: 75%</p>
+                  <div class="d-flex flex-wrap">
+                    <a href="${meetLink}" target="_blank" class="btn btn-outline-light btn-sm btn-meet"><i class="fab fa-google"></i></a>
+                    <a href="${zoomLink}" target="_blank" class="btn btn-outline-light btn-sm btn-zoom"><i class="fab fa-zoom"></i></a>
+                  </div>
+                </div>`;
+            }
+
+            matchContainer.innerHTML += matchHtml;
+
+            // Add celebration effect for match
+            celebrateMatch();
+            showSuccessAnimation();
+            showNotification('Match found! Connection made successfully!');
+          }
+        });
+
+        if (!matchFound) {
+          let waitingHtml = '';
+
+          if (currentView === 'list') {
+            waitingHtml = `
+              <div class="match-item waiting-match">
+                <div class="user-profile">
+                  <div class="user-avatar">${newUser.name.charAt(0)}</div>
+                  <div>
+                    <h5>${newUser.name} <span class="badge badge-${newUser.skillLevel === 'expert' ? 'success' : newUser.skillLevel === 'beginner' ? 'warning' : 'info'}">${newUser.skillLevel}</span></h5>
+                    <p class="small">Joined: ${newUser.joinDate}</p>
+                  </div>
+                </div>
+                ⏳ <strong>${newUser.name}</strong> is waiting for a match...<br>
+                Skills: <span class="skill-tag">${newUser.canTeach}</span> ⇄ <span class="skill-tag">${newUser.wantToLearn}</span>
+              </div>`;
+          } else {
+            waitingHtml = `
+              <div class="match-card waiting-match">
+                <div class="user-profile">
+                  <div class="user-avatar">${newUser.name.charAt(0)}</div>
+                  <div>
+                    <h5>${newUser.name} <span class="badge badge-${newUser.skillLevel === 'expert' ? 'success' : newUser.skillLevel === 'beginner' ? 'warning' : 'info'}">${newUser.skillLevel}</span></h5>
+                    <p class="small">Joined: ${newUser.joinDate}</p>
+                  </div>
+                </div>
+                ⏳ Waiting for a match...<br>
+                <p><span class="skill-tag">${newUser.canTeach}</span> ⇄ <span class="skill-tag">${newUser.wantToLearn}</span></p>
+              </div>`;
+          }
+
+          matchContainer.innerHTML += waitingHtml;
+          showNotification('Profile saved! We\'ll notify you when we find a match.');
+        }
+
+        document.getElementById("skillForm").reset();
+      });
+
+    // Highlight active nav link
+    const currentLocation = window.location.href;
+    const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
+
+    navLinks.forEach((link) => {
+      if (
+        link.href === currentLocation ||
+        currentLocation.includes(link.getAttribute("href"))
+      ) {
+        link.classList.add("active");
+      }
+    });
+
+    // Celebration effect for matches
+    function celebrateMatch() {
+      const celebration = document.createElement('div');
+      celebration.style.position = 'fixed';
+      celebration.style.top = '0';
+      celebration.style.left = '0';
+      celebration.style.width = '100%';
+      celebration.style.height = '100%';
+      celebration.style.zIndex = '9999';
+      celebration.style.pointerEvents = 'none';
+      document.body.appendChild(celebration);
+
+      for (let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div');
+        confetti.innerHTML = '🎉';
+        confetti.style.position = 'absolute';
+        confetti.style.fontSize = '24px';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.animation = `confettiFall ${Math.random() * 2 + 1}s linear forwards`;
+        celebration.appendChild(confetti);
+      }
+
+      // Add confetti fall animation
+      const style = document.createElement('style');
+      style.textContent = `
+          @keyframes confettiFall {
+            to {
+              transform: translateY(100vh) rotate(360deg);
+              opacity: 0;
+            }
+          }
+        `;
+      document.head.appendChild(style);
+
+      // Remove celebration after animation completes
+      setTimeout(() => {
+        document.body.removeChild(celebration);
+      }, 3000);
+    }
+
+    // Load existing matches on page load
+    function loadExistingMatches() {
+      const users = getUsersFromStorage();
+      const matchContainer = document.getElementById("matchResults");
+
+      // Clear existing content
+      matchContainer.innerHTML = '';
+
+      // Set the appropriate class based on current view
+      if (currentView === 'grid') {
+        matchContainer.classList.add('matches-grid');
+      } else {
+        matchContainer.classList.remove('matches-grid');
+      }
+
+      // Find and display all matches
+      for (let i = 0; i < users.length; i++) {
+        for (let j = i + 1; j < users.length; j++) {
+          const user1 = users[i];
+          const user2 = users[j];
+
+          if (user1.canTeach === user2.wantToLearn && user1.wantToLearn === user2.canTeach) {
+            const meetLink = "https://meet.google.com/";
+            const zoomLink = "https://zoom.us/";
+
+            let matchHtml = '';
+
+            if (currentView === 'list') {
+              matchHtml = `
+                <div class="match-item matched-item">
+                  <div class="user-profile">
+                    <div class="user-avatar">${user2.name.charAt(0)}</div>
+                    <div>
+                      <h5>${user2.name} <span class="badge badge-${user2.skillLevel === 'expert' ? 'success' : user2.skillLevel === 'beginner' ? 'warning' : 'info'}">${user2.skillLevel}</span></h5>
+                      <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p><strong>${user1.name}</strong> (<a href="mailto:${user1.email}" class="text-info">${user1.email}</a>) 
+                  <span class="text-warning">↔</span> 
+                  <strong>${user2.name}</strong> (<a href="mailto:${user2.email}" class="text-info">${user2.email}</a>)</p>
+                  <p>Skills: <span class="skill-tag">${user1.canTeach}</span> ⇄ <span class="skill-tag">${user1.wantToLearn}</span></p>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 75%"></div>
+                  </div>
+                  <p class="small">Match strength: 75%</p>
+                  <a href="${meetLink}" target="_blank" class="btn btn-outline-light btn-sm btn-meet"><i class="fab fa-google"></i> Google Meet</a>
+                  <a href="${zoomLink}" target="_blank" class="btn btn-outline-light btn-sm btn-zoom"><i class="fab fa-zoom"></i> Zoom</a>
+                </div>`;
+            } else {
+              matchHtml = `
+                <div class="match-card matched-item">
+                  <div class="user-profile">
+                    <div class="user-avatar">${user2.name.charAt(0)}</div>
+                    <div>
+                      <h5>${user2.name} <span class="badge badge-${user2.skillLevel === 'expert' ? 'success' : user2.skillLevel === 'beginner' ? 'warning' : 'info'}">${user2.skillLevel}</span></h5>
+                      <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p><strong>Skills exchange:</strong></p>
+                  <p><span class="skill-tag">${user1.canTeach}</span> ⇄ <span class="skill-tag">${user1.wantToLearn}</span></p>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 75%"></div>
+                  </div>
+                  <p class="small">Match strength: 75%</p>
+                  <div class="d-flex flex-wrap">
+                    <a href="${meetLink}" target="_blank" class="btn btn-outline-light btn-sm btn-meet"><i class="fab fa-google"></i></a>
+                    <a href="${zoomLink}" target="_blank" class="btn btn-outline-light btn-sm btn-zoom"><i class="fab fa-zoom"></i></a>
+                  </div>
+                </div>`;
+            }
+
+            matchContainer.innerHTML += matchHtml;
+          }
+        }
+      }
+
+      // Show waiting users if no matches found or in addition to matches
+      users.forEach(user => {
+        const hasMatch = users.some(otherUser =>
+          otherUser.email !== user.email &&
+          otherUser.canTeach === user.wantToLearn &&
+          otherUser.wantToLearn === user.canTeach
+        );
+
+        if (!hasMatch) {
+          let waitingHtml = '';
+
+          if (currentView === 'list') {
+            waitingHtml = `
+              <div class="match-item waiting-match">
+                <div class="user-profile">
+                  <div class="user-avatar">${user.name.charAt(0)}</div>
+                  <div>
+                    <h5>${user.name} <span class="badge badge-${user.skillLevel === 'expert' ? 'success' : user.skillLevel === 'beginner' ? 'warning' : 'info'}">${user.skillLevel}</span></h5>
+                    <p class="small">Joined: ${user.joinDate}</p>
+                  </div>
+                </div>
+                ⏳ <strong>${user.name}</strong> is waiting for a match...<br>
+                Skills: <span class="skill-tag">${user.canTeach}</span> ⇄ <span class="skill-tag">${user.wantToLearn}</span>
+              </div>`;
+          } else {
+            waitingHtml = `
+              <div class="match-card waiting-match">
+                <div class="user-profile">
+                  <div class="user-avatar">${user.name.charAt(0)}</div>
+                  <div>
+                    <h5>${user.name} <span class="badge badge-${user.skillLevel === 'expert' ? 'success' : user.skillLevel === 'beginner' ? 'warning' : 'info'}">${user.skillLevel}</span></h5>
+                    <p class="small">Joined: ${user.joinDate}</p>
+                  </div>
+                </div>
+                ⏳ Waiting for a match...<br>
+                <p><span class="skill-tag">${user.canTeach}</span> ⇄ <span class="skill-tag">${user.wantToLearn}</span></p>
+              </div>`;
+          }
+
+          matchContainer.innerHTML += waitingHtml;
+        }
+      });
+    }
+
+    // Initialize particles, animations and load existing matches when page loads
+    window.addEventListener('DOMContentLoaded', (event) => {
+      createParticles();
+      loadExistingMatches();
+      updateStats();
+
+      // Add event listeners for filter controls
+      document.getElementById('searchFilter').addEventListener('input', filterMatches);
+      document.getElementById('skillFilter').addEventListener('change', filterMatches);
+      document.getElementById('levelFilter').addEventListener('change', filterMatches);
+
+      // Add event listeners for view toggles
+      document.getElementById('listViewBtn').addEventListener('click', () => toggleView('list'));
+      document.getElementById('gridViewBtn').addEventListener('click', () => toggleView('grid'));
+
+      // Add demo data if empty
+      if (users.length === 0) {
+        users = [
+          {
+            name: 'Alex Johnson',
+            email: 'alex@example.com',
+            canTeach: 'web development',
+            wantToLearn: 'graphic design',
+            skillLevel: 'advanced',
+            joinDate: new Date().toLocaleDateString(),
+            id: 1
+          },
+          {
+            name: 'Sarah Miller',
+            email: 'sarah@example.com',
+            canTeach: 'graphic design',
+            wantToLearn: 'web development',
+            skillLevel: 'intermediate',
+            joinDate: new Date().toLocaleDateString(),
+            id: 2
+          },
+          {
+            name: 'Mike Chen',
+            email: 'mike@example.com',
+            canTeach: 'digital marketing',
+            wantToLearn: 'photography',
+            skillLevel: 'expert',
+            joinDate: new Date().toLocaleDateString(),
+            id: 3
+          }
+        ];
+        saveUsersToStorage(users);
+        loadExistingMatches();
+        updateStats();
+      }
+    });
+  </script>
+
+  <!-- Bootstrap JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
